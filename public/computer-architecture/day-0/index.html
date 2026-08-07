@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Day 0 | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, &ldquo;Holy shit! This is the real deal&rdquo;. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.">
+<meta name="author" content="">
+<link rel="canonical" href="https://example.org/computer-architecture/day-0/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://example.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://example.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://example.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://example.org/computer-architecture/day-0/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://example.org/computer-architecture/day-0/">
+  <meta property="og:site_name" content="Buffbahun Blogs">
+  <meta property="og:title" content="Day 0">
+  <meta property="og:description" content="The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, “Holy shit! This is the real deal”. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="computer-architecture">
+    <meta property="article:published_time" content="2026-08-04T14:52:46+05:45">
+    <meta property="article:modified_time" content="2026-08-04T14:52:46+05:45">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Day 0">
+  <meta name="twitter:description" content="The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, “Holy shit! This is the real deal”. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://example.org/computer-architecture/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Day 0",
+      "item": "https://example.org/computer-architecture/day-0/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Day 0",
+  "name": "Day 0",
+  "description": "The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, \u0026ldquo;Holy shit! This is the real deal\u0026rdquo;. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, “Holy shit! This is the real deal”. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.\nI have created a repo ()[], you may be shoked you see typescript here. Double shocked on seeing html file. Inside the src you will see directory named virtual-machine. Yes virtual machine. Dont get any confused I will explain why. My goal being creating a operating system, I have to eventually run it on a actual machine/microprocessor. But till then I have lot to implement and test. So I though whah if I implement my OS on the browser first so that I can masively test algorithms and implementations. But the browser is just a user application so I am implementing a simple virtual computer inside browser.\nSee my intiution is straight forward. To properly implement my OS, I need to have a good foundation on the architecture and hardware side of the computer especially the processor, memory and storage. Plus I will add lot of debugging principles from the hardware level so it will be way easier to debug my OS. Again, I am a novice on both architecture and hardware. We will lern and implement along the way.\nLet us start from the building block of computers. The humble logical gates. I have my implementations below:\nexport function andGate(bit0: Bit, bit1: Bit): Bit { if (bit0 === 1 \u0026\u0026 bit1 === 1) return 1; else return 0; } export function orGate(bit0: Bit, bit1: Bit): Bit { if (bit0 === 1 || bit1 === 1) return 1; else return 0; } export function inverter(bit0: Bit): Bit { if (bit0 === 0) return 1; else return 0; } export function nandGate(bit0: Bit, bit1: Bit): Bit { return inverter( andGate(bit0, bit1) ); } export function norGate(bit0: Bit, bit1: Bit): Bit { return inverter( orGate(bit0, bit1) ); } export function xorGate(bit0: Bit, bit1: Bit): Bit { return andGate( orGate(bit0, bit1), nandGate(bit0, bit1), ); } The Bit type I have implemented is simply:\nexport type Bit = 0 | 1; Just as arethematic operators such as addition’+’, minus’-’, the logical gates are devices that does binary operations of inputs and return a binary output. The three major logical gates are and, or and not gate and the binary operations they perform are and, or and inverse operations respectfully. The operations are also called logical operations because as we see we have just two valuse ‘0’ and ‘1’ consistuting the binary numbers they can we though of logical values such as true and false, or on and off. I think you get the idea. Its the mathematical representation of the philoshophical logic.\nThe AND logical gate performs AND operation on the inputs. Same as we such an in our statements for example when we go to a shop and we say “Please give me a shirt which has colors red ‘and’ blue”. The store person gives you a shirt haveing both red and blue color, the AND operator return Bit value ‘1’ if and only if all the inputs are Bit value ‘1’, else give output ‘0’. Similarly the OR gate is also similar to our use of daily conversations and statements of having either any of it, the OR operator gives output Bit ‘1’ if any of the input is Bit ‘1’ and Bit ‘0’ only in the case when all the inputs are Bit ‘0’.\nAnother fundamental logical gate is the NOT gate, its more of a inverter then a operator as it outputs the flipped value of the input. If input is Bit ‘0’ then output is Bit ‘1’ and vice versa. Now other operator that I have implemented are combinations of these three fundamental gates(AND, OR, NOT). The XOR operator is an interesting one as it outputs Bit ‘1’ when the two inputs are different else on both inputs same it outputs Bit ‘0’.\nI think for today this much will do the job. Tommorow we will try to implement Adder from this logical gates. Till then cheers. Have a good one.\nOm Namaha Shivaya.\n",
+  "wordCount" : "774",
+  "inLanguage": "en",
+  "datePublished": "2026-08-04T14:52:46+05:45",
+  "dateModified": "2026-08-04T14:52:46+05:45",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://example.org/computer-architecture/day-0/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Buffbahun Blogs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://example.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://example.org/" accesskey="h" title="Buffbahun Blogs (Alt + H)">Buffbahun Blogs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Day 0
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-08-04 14:52:46 +0545 +0545'>August 4, 2026</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><p>The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, &ldquo;Holy shit! This is the real deal&rdquo;. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.</p>
+<p>I have created a repo ()[], you may be shoked you see typescript here. Double shocked on seeing html file. Inside the src you will see directory named virtual-machine. Yes virtual machine. Dont get any confused I will explain why. My goal being creating a operating system, I have to eventually run it on a actual machine/microprocessor. But till then I have lot to implement and test. So I though whah if I implement my OS on the browser first so that I can masively test algorithms and implementations. But the browser is just a user application so I am implementing a simple virtual computer inside browser.</p>
+<p>See my intiution is straight forward. To properly implement my OS, I need to have a good foundation on the architecture and  hardware side of the computer especially the processor, memory and storage. Plus I will add lot of debugging principles from the hardware level so it will be way easier to debug my OS. Again, I am a novice on both architecture and hardware. We will lern and implement along the way.</p>
+<p>Let us start from the building block of computers. The humble logical gates. I have my implementations below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">andGate</span>(<span style="color:#a6e22e">bit0</span>: <span style="color:#66d9ef">Bit</span>, <span style="color:#a6e22e">bit1</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">bit0</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">bit1</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">orGate</span>(<span style="color:#a6e22e">bit0</span>: <span style="color:#66d9ef">Bit</span>, <span style="color:#a6e22e">bit1</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">bit0</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">bit1</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit0</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">bit0</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">nandGate</span>(<span style="color:#a6e22e">bit0</span>: <span style="color:#66d9ef">Bit</span>, <span style="color:#a6e22e">bit1</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">inverter</span>( <span style="color:#a6e22e">andGate</span>(<span style="color:#a6e22e">bit0</span>, <span style="color:#a6e22e">bit1</span>) );
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">norGate</span>(<span style="color:#a6e22e">bit0</span>: <span style="color:#66d9ef">Bit</span>, <span style="color:#a6e22e">bit1</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">inverter</span>( <span style="color:#a6e22e">orGate</span>(<span style="color:#a6e22e">bit0</span>, <span style="color:#a6e22e">bit1</span>) );
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">xorGate</span>(<span style="color:#a6e22e">bit0</span>: <span style="color:#66d9ef">Bit</span>, <span style="color:#a6e22e">bit1</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">orGate</span>(<span style="color:#a6e22e">bit0</span>, <span style="color:#a6e22e">bit1</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">nandGate</span>(<span style="color:#a6e22e">bit0</span>, <span style="color:#a6e22e">bit1</span>),
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The Bit type I have implemented is simply:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Bit</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span>;
+</span></span></code></pre></div><p>Just as arethematic operators such as addition&rsquo;+&rsquo;, minus&rsquo;-&rsquo;, the logical gates are devices that does binary operations of inputs and return a binary output. The three major logical gates are and, or and not gate and the binary operations they perform are and, or and inverse operations respectfully. The operations are also called logical operations because as we see we have just two valuse &lsquo;0&rsquo; and &lsquo;1&rsquo; consistuting the binary numbers they can we though of logical values such as true and false, or on and off. I think you get the idea. Its the mathematical representation of the philoshophical logic.</p>
+<p>The AND logical gate performs AND operation on the inputs. Same as we such an in our statements for example when we go to a shop and we say &ldquo;Please give me a shirt which has colors red &lsquo;and&rsquo; blue&rdquo;. The store person gives you a shirt haveing both red and blue color, the AND operator return Bit value &lsquo;1&rsquo; if and only if all the inputs are Bit value &lsquo;1&rsquo;, else give output &lsquo;0&rsquo;. Similarly the OR gate is also similar to our use of daily conversations and statements of having either any of it, the OR operator gives output Bit &lsquo;1&rsquo; if any of the input is Bit &lsquo;1&rsquo; and Bit &lsquo;0&rsquo; only in the case when all the inputs are Bit &lsquo;0&rsquo;.</p>
+<p>Another fundamental logical gate is the NOT gate, its more of a inverter then a operator as it outputs the flipped value of the input. If input is Bit &lsquo;0&rsquo; then output is Bit &lsquo;1&rsquo; and vice versa. Now other operator that I have implemented are combinations of these three fundamental gates(AND, OR, NOT). The XOR operator is an interesting one as it outputs Bit &lsquo;1&rsquo; when the two inputs are different else on both inputs same it outputs Bit &lsquo;0&rsquo;.</p>
+<p>I think for today this much will do the job. Tommorow we will try to implement Adder from this logical gates. Till then cheers. Have a good one.</p>
+<p>Om Namaha Shivaya.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://example.org/">Buffbahun Blogs</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

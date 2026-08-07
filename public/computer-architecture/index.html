@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head>
-	<meta name="generator" content="Hugo 0.164.0"><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Buffbahun Blogs</title>
-
-<meta name="description" content="">
+<title>Computer Architecture | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="This is a series where I am building a virtual machine inside the browser. Its a simple one for later implementing my Operating System.">
 <meta name="author" content="">
-<link rel="canonical" href="https://example.org/">
+<link rel="canonical" href="https://example.org/computer-architecture/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://example.org/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://example.org/favicon-16x16.png">
@@ -19,8 +18,8 @@
 <link rel="mask-icon" href="https://example.org/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://example.org/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="https://example.org/">
+<link rel="alternate" type="application/rss+xml" href="https://example.org/computer-architecture/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://example.org/computer-architecture/">
 <noscript>
     <style>
         #theme-toggle,
@@ -66,25 +65,29 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script><meta property="og:url" content="https://example.org/">
+</script><meta property="og:url" content="https://example.org/computer-architecture/">
   <meta property="og:site_name" content="Buffbahun Blogs">
-  <meta property="og:title" content="Buffbahun Blogs">
+  <meta property="og:title" content="Computer Architecture">
+  <meta property="og:description" content="This is a series where I am building a virtual machine inside the browser. Its a simple one for later implementing my Operating System.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="website">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Buffbahun Blogs">
+  <meta name="twitter:title" content="Computer Architecture">
+  <meta name="twitter:description" content="This is a series where I am building a virtual machine inside the browser. Its a simple one for later implementing my Operating System.">
+
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Buffbahun Blogs",
-  "url": "https://example.org/",
-  "description": "",
-  "logo": "https://example.org/favicon.ico",
-  "sameAs": [
-      
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://example.org/computer-architecture/"
+    }
   ]
 }
 </script>
@@ -121,55 +124,76 @@
         </ul>
     </nav>
 </header>
-<main class="main">
-
+<main class="main"> 
 <header class="page-header">
-    <h1>Buffbahun Blogs</h1>
+  <h1>
+    Computer Architecture
+  </h1>
+  <div class="post-description">
+    This is a series where I am building a virtual machine inside the browser. Its a simple one for later implementing my Operating System.
+  </div>
 </header>
 
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 3
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Yes, I have implemented RAM, first I want you to have a look at it:
+export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array; private totalBytes: number; constructor() { // max address lane is 32 bits, so max ram size is 2 pow 32 this.totalBytes = Math.min(2 ** 32, 1 * 1024 * 1024); this.data = new SharedArrayBuffer(this.totalBytes); this.dataView = new Uint8Array(this.data); } getBuffer() { return this.data; } read8(address: Bit32) { const dataNum = this.dataView.at(this.addressToIndex(address)); if (dataNum !== undefined) { return decimalToBinary(dataNum, 8) as Bit8; } } write8(address: Bit32, data: Bit8) { const dataNum = binaryToDecimal(data); this.dataView[this.addressToIndex(address)] = dataNum; } private addressToIndex(address: Bit32): number { const index = binaryToDecimal(address); if (index &gt;= this.totalBytes) { throw new HardwareExpection( HardwareExceptionType.MemoryFault, `Invalid address to RAM: 0x${index.toString(16)}`, index ) } return index; } } While on the register where I used the array variable to store the values, the RAM uses SharedArrayBuffer. Its the same as ArrayBuffer which is raw binary buffer. The array buffer is quite similar to the real memory as its also situated on the real memory one after another adjecent to eachother like a real memory, thus is has good speed which accessing and manipulating the buffer. Now why SharedArrayBuffer instead of the plain ArrayBuffer is beacause while ArrayBuffer can mimic memory in a single core/thread, the shared buffer as its name can be shared accross multiple cores and workers simultaneously.
+...</p>
+  </div>
+  <footer class="entry-footer">
 
-
-<article class="post-entry">
-
-    <header class="entry-header">
-        <h2>Computer Architecture</h2>
-    </header>
-
-    <div class="entry-content">
-        <p>This is a series where I am building a virtual machine inside the browser. Its a simple one for later implementing my Operating System.</p>
-    </div>
-
-    <a
-        class="entry-link"
-        aria-label="Go to Computer Architecture"
-        href="/computer-architecture/">
-    </a>
-
+<span title='2026-08-07 09:11:35 +0545 +0545'>August 7, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 3" href="https://example.org/computer-architecture/day-3/"></a>
 </article>
 
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 2
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.
+...</p>
+  </div>
+  <footer class="entry-footer">
 
-
-<article class="post-entry">
-
-    <header class="entry-header">
-        <h2>Operating-Systems</h2>
-    </header>
-
-    <div class="entry-content">
-        <p></p>
-    </div>
-
-    <a
-        class="entry-link"
-        aria-label="Go to Operating-Systems"
-        href="/operating-system/">
-    </a>
-
+<span title='2026-08-06 10:07:19 +0545 +0545'>August 6, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 2" href="https://example.org/computer-architecture/day-2/"></a>
 </article>
 
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 1
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>As we are building a computer though its virtual, but from ground up, we all should ask ourself question. What actually is a computer? Hmm, time to think deep. In my openion a computer is a glorified calculator. More specifically, its a high speed adder, capable of doing millions and billions of addition per second. But you may ask “shut up!, computers do crazy calculations”. Yes you are right but every operations and calculations you think of cn be and is stem by the addition operation.
+...</p>
+  </div>
+  <footer class="entry-footer">
 
+<span title='2026-08-05 09:17:32 +0545 +0545'>August 5, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 1" href="https://example.org/computer-architecture/day-1/"></a>
+</article>
 
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 0
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, “Holy shit! This is the real deal”. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.
+...</p>
+  </div>
+  <footer class="entry-footer">
 
+<span title='2026-08-04 14:52:46 +0545 +0545'>August 4, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 0" href="https://example.org/computer-architecture/day-0/"></a>
+</article>
     </main>
     
 <footer class="footer">

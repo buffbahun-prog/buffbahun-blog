@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Day 2 | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.">
+<meta name="author" content="">
+<link rel="canonical" href="https://example.org/computer-architecture/day-2/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://example.org/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://example.org/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://example.org/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://example.org/apple-touch-icon.png">
+<link rel="mask-icon" href="https://example.org/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://example.org/computer-architecture/day-2/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://example.org/computer-architecture/day-2/">
+  <meta property="og:site_name" content="Buffbahun Blogs">
+  <meta property="og:title" content="Day 2">
+  <meta property="og:description" content="I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="computer-architecture">
+    <meta property="article:published_time" content="2026-08-06T10:07:19+05:45">
+    <meta property="article:modified_time" content="2026-08-06T10:07:19+05:45">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Day 2">
+  <meta name="twitter:description" content="I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://example.org/computer-architecture/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Day 2",
+      "item": "https://example.org/computer-architecture/day-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Day 2",
+  "name": "Day 2",
+  "description": "I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.\nNow there are two oytputs from this circuit configurations and the two outputs are always opposite to each other and are denoted by Q and Q’. Similarly the two set and reset inuts of the circuit also should always be opposite, such that when set is 1, reset should be 0, so that the output Q is 1 whereas Q’ is 0. Foe the case of set is 0 reset sould be 1, so that the output Q is 0 and Q’ is 1.\nNow combining this individual circuit also called latch, we have make ourself 8 bit/ 1 byte register, 32 bits register and so on as per our need. For me to implement this system was quite easy as we could mimick the feedback loop of the circuit in our machine so that I have used variables to store the values. Such as:\nexport class register32 { private q: Bit32; constructor() { this.q = Array.from({length: 32}, () =\u003e 0 as Bit) as Bit32; } get() { return this.q; } set(dataIn: Bit32, clk: Bit) { if (clk === 0) return; this.q = dataIn; } clear() { this.q = this.q.map(() =\u003e 0 as Bit) as Bit32; } } You can see above, I have implemented a class for the resiter and stored bits in an array and exposed methods for geting, seting and clearning the register. The clk on the set methods parameter is the clock output. I did this for synchronization purpose, but for a simulation I am confused whether should I apply it and if yes it should be enforsed on every circuit and if no I will remove it. But either way all the codes I have implemented till now and on the future are subjected to change, and in such cases I will try to explain the updated part of codes in the series.\nI think we should keep it short for today. Honestly I wanted to show and explain the RAM I had implemented but I am still not sure the final implemnetation of it, and tommorow I will discuss that with a clear implementation.\nTill then Cheers. Have a good one.\nOm Namaha Shivaya.\n",
+  "wordCount" : "461",
+  "inLanguage": "en",
+  "datePublished": "2026-08-06T10:07:19+05:45",
+  "dateModified": "2026-08-06T10:07:19+05:45",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://example.org/computer-architecture/day-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Buffbahun Blogs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://example.org/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://example.org/" accesskey="h" title="Buffbahun Blogs (Alt + H)">Buffbahun Blogs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Day 2
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-08-06 10:07:19 +0545 +0545'>August 6, 2026</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><p>I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.</p>
+<p>Now there are two oytputs from this circuit configurations and the two outputs are always opposite to each other and are denoted by Q and Q&rsquo;. Similarly the two set and reset inuts of the circuit also should always be opposite, such that when set is 1, reset should be 0, so that the output Q is 1 whereas Q&rsquo; is 0. Foe the case of set is 0 reset sould be 1, so that the output Q is 0 and Q&rsquo; is 1.</p>
+<p>Now combining this individual circuit also called latch, we have make ourself 8 bit/ 1 byte register, 32 bits register and so on as per our need. For me to implement this system was quite easy as we could mimick the feedback loop of the circuit in our machine so that I have used variables to store the values. Such as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">register32</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">q</span>: <span style="color:#66d9ef">Bit32</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">q</span> <span style="color:#f92672">=</span> Array.<span style="color:#66d9ef">from</span>({<span style="color:#a6e22e">length</span>: <span style="color:#66d9ef">32</span>}, () <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">get</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">q</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">set</span>(<span style="color:#a6e22e">dataIn</span>: <span style="color:#66d9ef">Bit32</span>, <span style="color:#a6e22e">clk</span>: <span style="color:#66d9ef">Bit</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">clk</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">q</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">dataIn</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">clear() {</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">q</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">q</span>.<span style="color:#a6e22e">map</span>(() <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can see above, I have implemented a class for the resiter and stored bits in an array and exposed methods for geting, seting and clearning the register. The clk on the set methods parameter is the clock output. I did this for synchronization purpose, but for a simulation I am confused whether should I apply it and if yes it should be enforsed on every circuit and if no I will remove it. But either way all the codes I have implemented till now and on the future are subjected to change, and in such cases I will try to explain the updated part of codes in the series.</p>
+<p>I think we should keep it short for today. Honestly I wanted to show and explain the RAM I had implemented but I am still not sure the final implemnetation of it, and tommorow I will discuss that with a clear implementation.</p>
+<p>Till then Cheers.
+Have a good one.</p>
+<p>Om Namaha Shivaya.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://example.org/">Buffbahun Blogs</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

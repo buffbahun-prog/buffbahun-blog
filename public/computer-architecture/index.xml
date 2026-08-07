@@ -13,7 +13,7 @@
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-3/</link>
       <pubDate>Fri, 07 Aug 2026 09:11:35 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-3/</guid>
-      <description>&lt;p&gt;Yes, I have implemented RAM, first I want you to have a look at it:&lt;/p&gt;
+      <description>&lt;p&gt;Yes, I have implemented RAM. First, I want you to have a look at it:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-ts&#34; data-lang=&#34;ts&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RAM&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;SharedArrayBuffer&lt;/span&gt;;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;dataView&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;Uint8Array&lt;/span&gt;;
@@ -54,28 +54,30 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;index&lt;/span&gt;;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;While on the register where I used the array variable to store the values, the RAM uses SharedArrayBuffer. Its the same as ArrayBuffer which is raw binary buffer. The array buffer is quite similar to the real memory as its also situated on the real memory one after another adjecent to eachother like a real memory, thus is has good speed which accessing and manipulating the buffer. Now why SharedArrayBuffer instead of the plain ArrayBuffer is beacause while ArrayBuffer can mimic memory in a single core/thread, the shared buffer as its name can be shared accross multiple cores and workers simultaneously.&lt;/p&gt;</description>
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Day 2</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-2/</link>
       <pubDate>Thu, 06 Aug 2026 10:07:19 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-2/</guid>
-      <description>&lt;p&gt;I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.&lt;/p&gt;</description>
+      <description>&lt;p&gt;I was very excited to learn how the heck, using just logic gates, we can build memory to store bits. It turns out that, using just two NOR gates, we can store 1 bit. The two NOR gates are configured such that one input of the gates is the set and reset input respectively, whereas the other inputs are connected to the output of the opposite gate. Now, connecting the input of one gate to the output of the other gate creates a kind of feedback loop by which the previous state of the circuit determines or influences the current state. It&amp;rsquo;s the nature of a feedback system.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Day 1</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-1/</link>
       <pubDate>Wed, 05 Aug 2026 09:17:32 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-1/</guid>
-      <description>&lt;p&gt;As we are building a computer though its virtual, but from ground up, we all should ask ourself  question. What actually is a computer? Hmm, time to think deep. In my openion a computer is a glorified calculator. More specifically, its a high speed adder, capable of doing millions and billions of addition per second. But you may ask &amp;ldquo;shut up!, computers do crazy calculations&amp;rdquo;. Yes you are right but every operations and calculations you think of cn be and is stem by the addition operation.&lt;/p&gt;</description>
+      <description>&lt;p&gt;As we are building a computer, though it&amp;rsquo;s virtual, from the ground up, we should all ask ourselves a question. What actually is a computer? Hmm, time to think deep.&lt;/p&gt;
+&lt;p&gt;In my opinion, a computer is a glorified calculator. More specifically, it&amp;rsquo;s a high-speed adder, capable of doing millions and billions of additions per second. But you may ask, &amp;ldquo;Shut up! Computers do crazy calculations.&amp;rdquo; Yes, you are right, but every operation and calculation you think of can be, and is, derived from the addition operation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Day 0</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-0/</link>
       <pubDate>Tue, 04 Aug 2026 14:52:46 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-0/</guid>
-      <description>&lt;p&gt;The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, &amp;ldquo;Holy shit! This is the real deal&amp;rdquo;. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.&lt;/p&gt;</description>
+      <description>&lt;p&gt;The other day I was studying some algorithms used in the file system and buffers that the Unix system used. I was fascinated by the cleverness and engineering intuition behind the implementation. The engineer inside of me screamed in excitement, &amp;ldquo;Holy shit! This is the real deal.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Now I have a crazy idea. Why not build my own operating system from scratch? Sounds insane, right? Yes, this scares me. I have no idea whatsoever, but with the right knowledge and, most of all, the right mindset, I think this can be accomplished, though it may take years and years. This is why you are reading this, as this is me documenting my journey. So let&amp;rsquo;s dive into this voyage.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

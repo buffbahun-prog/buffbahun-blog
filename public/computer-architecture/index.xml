@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Computer Architecture on Buffbahun Blogs</title>
-    <link>https://example.org/computer-architecture/</link>
+    <link>https://buffbahun-blog.pages.dev/computer-architecture/</link>
     <description>Recent content in Computer Architecture on Buffbahun Blogs</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 07 Aug 2026 09:11:35 +0545</lastBuildDate>
-    <atom:link href="https://example.org/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://buffbahun-blog.pages.dev/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Day 3</title>
-      <link>https://example.org/computer-architecture/day-3/</link>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-3/</link>
       <pubDate>Fri, 07 Aug 2026 09:11:35 +0545</pubDate>
-      <guid>https://example.org/computer-architecture/day-3/</guid>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-3/</guid>
       <description>&lt;p&gt;Yes, I have implemented RAM, first I want you to have a look at it:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-ts&#34; data-lang=&#34;ts&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RAM&lt;/span&gt; {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;SharedArrayBuffer&lt;/span&gt;;
@@ -58,23 +58,23 @@
     </item>
     <item>
       <title>Day 2</title>
-      <link>https://example.org/computer-architecture/day-2/</link>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-2/</link>
       <pubDate>Thu, 06 Aug 2026 10:07:19 +0545</pubDate>
-      <guid>https://example.org/computer-architecture/day-2/</guid>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-2/</guid>
       <description>&lt;p&gt;I was very excited how the heck using just logical gates we can build a memory to store bits. It turns out, just using two NOR gates we can store 1 Bit. The two NOR gates are configured such that, one input of the gates are set and reset respectively whereas the next inputs are connected to the output of the other gate. Now connecting the input of one gate to the output of another gate creates a kind of feedback loop by which the previous state of the circuit deremines/influences the current state. It the nature of the feedback system.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Day 1</title>
-      <link>https://example.org/computer-architecture/day-1/</link>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-1/</link>
       <pubDate>Wed, 05 Aug 2026 09:17:32 +0545</pubDate>
-      <guid>https://example.org/computer-architecture/day-1/</guid>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-1/</guid>
       <description>&lt;p&gt;As we are building a computer though its virtual, but from ground up, we all should ask ourself  question. What actually is a computer? Hmm, time to think deep. In my openion a computer is a glorified calculator. More specifically, its a high speed adder, capable of doing millions and billions of addition per second. But you may ask &amp;ldquo;shut up!, computers do crazy calculations&amp;rdquo;. Yes you are right but every operations and calculations you think of cn be and is stem by the addition operation.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Day 0</title>
-      <link>https://example.org/computer-architecture/day-0/</link>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-0/</link>
       <pubDate>Tue, 04 Aug 2026 14:52:46 +0545</pubDate>
-      <guid>https://example.org/computer-architecture/day-0/</guid>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-0/</guid>
       <description>&lt;p&gt;The other day I was studying some algorithms used in file system and buffers that the unix system used. I was fasinated by the cleverness and engineering intiutiveness for the implementation. The engineering inside of me scremed in excitement, &amp;ldquo;Holy shit! This is the real deal&amp;rdquo;. Now I have a crazy idea. Why not build my own operating system form scratch. Sounds insane right? Yes this scares me, I have no idea whatso ever, but with the right knowledge and most of all with right mindset I think this can be accomplished though it may take years and years. This is why you are reading this as this is me documenting my journey. So lets dive into this voyage.&lt;/p&gt;</description>
     </item>
   </channel>

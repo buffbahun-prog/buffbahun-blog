@@ -4,24 +4,34 @@ draft = false
 title = 'Day 1'
 +++
 
-As we are building a computer though its virtual, but from ground up, we all should ask ourself  question. What actually is a computer? Hmm, time to think deep. In my openion a computer is a glorified calculator. More specifically, its a high speed adder, capable of doing millions and billions of addition per second. But you may ask "shut up!, computers do crazy calculations". Yes you are right but every operations and calculations you think of cn be and is stem by the addition operation.
+As we are building a computer, though it's virtual, from the ground up, we should all ask ourselves a question. What actually is a computer? Hmm, time to think deep.
 
-Think of multiplication, its just addition of a number a number of times. A time B means add A, for B number of time or vice-versa. The power opertion similarly is multiplication of a number some number of times. Now lets hve a look at substraction. Think of it as addition of two numbers where the first number is  positive number whereas the second number is a negetive number. Now how do we represent the negetive number? Now think of digits and numbers as not a linear line but a circular clock, now lets make an assumption that first half of the numbers in the circle are positive numbers and the rest as negetive numbers.
+In my opinion, a computer is a glorified calculator. More specifically, it's a high-speed adder, capable of doing millions and billions of additions per second. But you may ask, "Shut up! Computers do crazy calculations." Yes, you are right, but every operation and calculation you think of can be, and is, derived from the addition operation.
 
-Lets analyze it with an example, suppose we have numbers 0 to 9, now imagive the numbers are in a circle same as in a clock. lets suppose we want difference of 5 and 3( 5 - 3 ), which we can arrange it like ( 5 + (-3) ). Now to get negetive 3, we go backward/counterclock-wise three steps which is 7. So negetive 3 (-3) is represented by 7, so summing 5 and 7 gives 12, where the 1 is crry over so discarding it we get 2. And thada 2 is the correct answer.
+Think of multiplication. It's just the addition of a number a number of times. A times B means adding A for B number of times, or vice versa. The power operation, similarly, is multiplication of a number some number of times. Now let's have a look at subtraction. Think of it as the addition of two numbers where the first number is positive whereas the second number is negative. Now how do we represent the negative number? Think of digits and numbers not as a linear line but as a circular clock. Now let's make an assumption that the first half of the numbers in the circle are positive numbers and the rest are negative numbers.
 
-Ok now we have our maths right and we are convinced that adder operator can be used for other operations such as substraction. Now how do we do the additions? On previous day we looked at the logical operations of binary numbers, today we will be looking at its arithematic operations. We human have decimal numbers to do our daily chores. have you noticed thats so special about it? Its nothing special looking from the prespective of mathematics, its just we have 10 fingers and our ancestors used to do counting with their fingers and this is how we developed our decimal number system.
+Let's analyze it with an example. Suppose we have numbers 0 to 9. Now imagine the numbers are arranged in a circle, just like a clock. Let's suppose we want the difference of 5 and 3 (5 - 3), which we can rewrite as (5 + (-3)). Now to get negative 3, we go backward (counter-clockwise) three steps, which is 7. So negative 3 (-3) is represented by 7. Summing 5 and 7 gives 12, where the 1 is the carry-over, so discarding it we get 2. And ta-da! 2 is the correct answer.
 
-In decimal number system we start from 0 counting all the way to 9, now after 9 we abondone any new symbol but combine 1 and 0 to form 10, and the increment is repeted. Similarly in binary first comes 0 and then 1, so what will be the next number? Yes right 10, dont assume its ten, its 1 and 0. Similar to the arethematics in the decimal system something added with zero gives that number, applies to not just binary but we get the idea that to any number system we decide to work with.
+Now we have our maths right and we are convinced that the adder can be used for other operations such as subtraction. But how do we actually perform addition?
 
-Lets add two binary numbers and lets see their results:
+On the previous day we looked at the logical operations of binary numbers. Today we will be looking at their arithmetic operations. We humans have decimal numbers to do our daily chores. Have you noticed what's so special about them? Looking from the perspective of mathematics, there is nothing special. It's just that we have 10 fingers, and our ancestors used them for counting. This is how we developed our decimal number system.
+
+In the decimal number system we start from 0, counting all the way to 9. After 9 we abandon any new symbol and instead combine 1 and 0 to form 10, and the increment repeats. Similarly, in binary first comes 0 and then 1, so what will be the next number? Yes, that's right: 10. Don't assume it's ten; it's simply 1 and 0.
+
+Similar to arithmetic in the decimal system, adding zero to a number gives the same number. This applies not just to binary, but to any number system we choose to work with.
+
+Let's add two binary numbers and see their results:
+```text
              carry   sum
 0 + 0 = 0    0       0
 0 + 1 = 1    0       1
 1 + 0 = 1    0       1
 1 + 1 = 10   1       0
+```
 
-Are you noticing something? Yes, the sum part is the result of xor operation, whereas the carry part is the result of the and operation. This means if we have a and and xor gates and we connect the inputs to this two gates and the output of the xor gate is the sum part, whereas the output of the and gate is the carry over part. I have implemented this in my code as:
+Are you noticing something? Yes, the sum part is the result of the XOR operation, whereas the carry part is the result of the AND operation. This means if we have AND and XOR gates, and we connect the inputs to these two gates, the output of the XOR gate is the sum, whereas the output of the AND gate is the carry-over.
+
+I have implemented this in my code as:
 ```ts
 export function halfAdder(bit0: Bit, bit1: Bit): [sum: Bit, carryOut: Bit] {
     return [
@@ -30,7 +40,7 @@ export function halfAdder(bit0: Bit, bit1: Bit): [sum: Bit, carryOut: Bit] {
     ]
 }
 ```
-This circuit is called a half adder, because we have not accounted for the carry in that shouldalso be added to the two input numbers. Then lets do just that:
+This circuit is called a half adder because we have not accounted for the carry-in that should also be added to the two input numbers. So let's do just that:
 ```ts
 export function fullAdder(carryIn: Bit, bit0: Bit, bit1: Bit): [sum: Bit, carryOut: Bit] {
     const [sumWithoutCarry, carry1] = halfAdder(bit0, bit1);
@@ -41,14 +51,18 @@ export function fullAdder(carryIn: Bit, bit0: Bit, bit1: Bit): [sum: Bit, carryO
     ];
 }
 ```
-This circuit consists of two half adder, first the sum of the two inputs are calculated, and then the sum output is added with the carryIn input by another hald adder, so the ouptupted sum is the full sum. Now the carry out is the OR output of the two calculated carry from the two hald adder. This is because:
+This circuit consists of two half adders. First, the sum of the two inputs is calculated, and then that sum is added with the carryIn input by another half adder, producing the final sum.
+
+The carry-out is the OR output of the two carry values produced by the two half adders. This is because:
+```text
 0 + 0 = 0
 0 + 1 = 1
 1 + 0 = 1
 1 + 1 = not possible/invalid
-You can see hereas the last output is not possible the above three inputs have the same result of that of the OR operator so the carry out is ouptuped from the OR gate.
+```
+As you can see, since the last output is not possible, the remaining three inputs produce exactly the same result as the OR operator. Therefore, the carry-out can be obtained using the OR gate.
 
-The above adders where all one bit adder, so I have implemented a 8 bit added as:
+The above adders were all one-bit adders, so I have implemented an 8-bit adder as:
 ```ts
 export function bitAdder8(carryIn: Bit, inp0: Bit8, inp1: Bit8): [sum: Bit8, carryOut: Bit , lastBitCarryIn: Bit] {
     const [sum0, carry0] = fullAdder(carryIn, inp0[7], inp1[7]);
@@ -68,11 +82,13 @@ export function bitAdder8(carryIn: Bit, inp0: Bit8, inp1: Bit8): [sum: Bit8, car
     ]
 }
 ```
-and the Bit8 type is just a array of 8 Bits:
+The Bit8 type is simply an array of eight Bits:
 ```ts
 export type Bit8 = [Bit, Bit, Bit, Bit, Bit, Bit, Bit, Bit];
 ```
-on the bitAdder8 the carryout of each of the fullAdder is the carryIn input of the next fullAdder. The last function I have implemented is adder-substractor:
+In bitAdder8, the carryOut of each fullAdder becomes the carryIn input of the next fullAdder.
+
+The last function I have implemented is an adder-subtractor:
 ```ts
 export function bitAdderSubstractor32(subMode: Bit, inp0: Bit32, inp1: Bit32): [result: Bit32, carryOut: Bit, overflow: Bit] {
 
@@ -103,24 +119,53 @@ export function bitAdderSubstractor32(subMode: Bit, inp0: Bit32, inp1: Bit32): [
     ]
 }
 ```
-As I have already cleared it out on the above paragraphs, the substraction is possible between two numbers with a addition operation if we get the complement of the negetive number, and after that the operation is just addition between a possitive and negetive number. And one nice thing about binary numbers is if we invert all the bits and add 1 we get the complement. Lets look at an example. Supose we need to substract 5 and 3 such as 5 - 3, now the binary representation of 5 is 101 and for three is 011, so the operation becomes:
+As I already explained above, subtraction is possible using addition if we first obtain the complement of the negative number. After that, the operation is simply addition between a positive and a negative number.
+
+One nice thing about binary numbers is that if we invert all the bits and add 1, we get the complement. Let's look at an example.
+
+Suppose we need to subtract 5 and 3 (5 - 3). The binary representation of 5 is 101, and for 3 it is 011, so the operation becomes:
+```text
 101 - 011
-which we can write is as:
+```
+which we can rewrite as:
+```text
 101 + (-011)
-Ok now to get the compliment of -011, we first invert 011, which gives 100, and now we add 1 to it (100 + 1 = 101). So 101 is the compliment of -011, as its binary numbers we call is 2's compliment. Lets now add the two numbers:
+```
+Now, to get the complement of -011, we first invert 011, which gives 100, and then add 1 to it (100 + 1 = 101).
+
+So 101 is the complement of -011. Since these are binary numbers, we call it the 2's complement.
+
+Now let's add the two numbers:
+```text
 5 - 3
 5 + (-3)
 101 + (-011)
 101 + 101
 010 = 2
-Here the carry bit is 1 which means the result is positive for the substraction operation, if the carry bit is 0 it means the result is negetive, which is denoted by the leftmost digit. I will give you and example for 3 - 5, if we did all step exactly as above we get result:
-0 as carryOut and 110 as sum, now as the carry bit is 0 meaning the number resulting is negetive which is denoted by the leftmost 1 in the result so the result actually is:
+```
+Here the carry bit is 1, which means the result is positive for the subtraction operation. If the carry bit is 0, it means the result is negative, which is denoted by the leftmost bit.
+
+I'll give you an example with 3 - 5. If we follow exactly the same steps as above, we get:
+```text
+carryOut = 0
+sum      = 110
+```
+Since the carry bit is 0, the resulting number is negative, which is denoted by the leftmost 1 in the result:
+```text
 110
 (1)10
-if carryOut bit for substraction operation is 0 ( leftmost bit if 0 then (+) else if leftmost bit is 1 then (-) )
+```
+So the actual result is:
+```text
 -10
 -2
-Above this is what the bitAdderSubstractor32 function dos, the first parament is subMod, i.e. if 1 substraction operation ,if 0 addition. And below we re doing invertion if subMod is 1 with a xor operator as xor operator outputs the inverted input bits when subMod is 1 else gives the output as it is when subMod is 0.
+```
+Above is exactly what the bitAdderSubstractor32 function does. The first parameter is subMode, where 1 means subtraction and 0 means addition. We invert the bits only when subMode is 1 by using the XOR operator, because XOR outputs the inverted input bits when one of its inputs is 1; otherwise, it leaves them unchanged.
 
-Phew, that was a lot. Now we are pretty familiar on how our computer actually adds and substracts and does other complex operation with the combination of this simple but fundamental operations. Ok on the next chpter, I will explore about how the hect using this gates does computer imlements fast memory. Honesty its over my head right now. Ok till then have a good one. Cheers.
-Om Namaha Shivaya.
+Phew, that was a lot. Now we are pretty familiar with how our computer actually adds and subtracts, and how it performs other complex operations using combinations of these simple but fundamental operations.
+
+In the next chapter, I will explore how, using these gates, computers implement fast memory. Honestly, it's still over my head right now, but we'll figure it out together.
+
+Till then, have a good one. Cheers.
+
+Om Namah Shivaya.

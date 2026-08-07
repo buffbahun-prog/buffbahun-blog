@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://buffbahun-blog.pages.dev/'
 locale = 'en-us'
 title = 'Buffbahun Blogs'
 theme = 'PaperMod'

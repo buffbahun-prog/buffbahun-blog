@@ -1,0 +1,29 @@
+{{ define "main" }}
+
+<header class="page-header">
+    <h1>{{ site.Title }}</h1>
+</header>
+
+{{ range site.Sections }}
+
+<article class="post-entry">
+
+    <header class="entry-header">
+        <h2>{{ .Title }}</h2>
+    </header>
+
+    <div class="entry-content">
+        <p>{{ .Description }}</p>
+    </div>
+
+    <a
+        class="entry-link"
+        aria-label="Go to {{ .Title }}"
+        href="{{ .RelPermalink }}">
+    </a>
+
+</article>
+
+{{ end }}
+
+{{ end }}

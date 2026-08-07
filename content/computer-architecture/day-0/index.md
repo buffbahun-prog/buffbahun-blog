@@ -8,7 +8,7 @@ The other day I was studying some algorithms used in the file system and buffers
 
 Now I have a crazy idea. Why not build my own operating system from scratch? Sounds insane, right? Yes, this scares me. I have no idea whatsoever, but with the right knowledge and, most of all, the right mindset, I think this can be accomplished, though it may take years and years. This is why you are reading this, as this is me documenting my journey. So let's dive into this voyage.
 
-I have created a <a href="https://github.com/buffbahun-prog/she-is-the-booms" target="_blank" rel="noopener noreferrer">repo</a>. You may be shocked to see TypeScript here. Double shocked on seeing an HTML file. Inside the src directory you will see a directory named virtual-machine. Yes, a virtual machine. Don't get confused; I will explain why.
+I have created a [repo](https://github.com/buffbahun-prog/she-is-the-booms). You may be shocked to see TypeScript here. Double shocked on seeing an HTML file. Inside the src directory you will see a directory named virtual-machine. Yes, a virtual machine. Don't get confused; I will explain why.
 
 My goal is to create an operating system, and I have to eventually run it on an actual machine/microprocessor. But until then, I have a lot to implement and test. So I thought, what if I implement my OS in the browser first so that I can massively test algorithms and implementations? But the browser is just a user application, so I am implementing a simple virtual computer inside the browser.
 

@@ -4,7 +4,7 @@ draft = false
 title = 'Day 3'
 +++
 
-Yes, I have implemented RAM, first I want you to have a look at it:
+Yes, I have implemented RAM. First, I want you to have a look at it:
 ```ts
 export class RAM {
     private data: SharedArrayBuffer;
@@ -47,13 +47,17 @@ export class RAM {
     }
 }
 ```
-While on the register where I used the array variable to store the values, the RAM uses SharedArrayBuffer. Its the same as ArrayBuffer which is raw binary buffer. The array buffer is quite similar to the real memory as its also situated on the real memory one after another adjecent to eachother like a real memory, thus is has good speed which accessing and manipulating the buffer. Now why SharedArrayBuffer instead of the plain ArrayBuffer is beacause while ArrayBuffer can mimic memory in a single core/thread, the shared buffer as its name can be shared accross multiple cores and workers simultaneously.
+Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.
 
-As per now I will be implementing a single core, but I will be implementing the CPU in a dedicated worker while the shared buffer in initialized in the main thread, this approach helps me in two ways. First of all all the computations and logics of the cpu will be on a different thread then that of the main thread which wont lag the main thread and the UI, and my other goal is to implement many cpu cores in the future, and this approach will make it earier to do it as all the cores can have simultaneous access to the sharedArrayBuffer i.e. the memory.
+Now, why SharedArrayBuffer instead of the plain ArrayBuffer? The reason is that while ArrayBuffer can mimic memory in a single thread, SharedArrayBuffer, as its name suggests, can be shared across multiple threads and workers simultaneously.
 
-In the constructor I have initialized the shareArrayBuffer with 1 MB of space. The maximum RAM space I have defined here is 2 ** 32, that is 4GB, becuse as we have 32 bits as the address space/lane the system can only address 4 GB worth of data.
+As of now, I will be implementing a single-core CPU, but I will be implementing the CPU in a dedicated worker while the shared buffer is initialized in the main thread. This approach helps me in two ways. First of all, all the computations and logic of the CPU will run on a different thread than the main thread, so the UI will remain responsive. My other goal is to implement multiple CPU cores in the future, and this approach will make it easier because all the cores can have simultaneous access to the SharedArrayBuffer, i.e., the memory.
 
-The read and write methods are quite straightforward. I have decided that the memory implementation sholud be simple and give 1 byte of data per address. Now the addressToIndex private method is quite interesting as this maps the binary type that I have implemented to index on the arrayBuffer. But the important part of this method is the error throwing. As we have memory of limited space, if we try to index/address the memory past its capacity then a exception is raised to the CPU about that particular error condition.
+In the constructor, I have initialized the SharedArrayBuffer with 1 MB of space. The maximum RAM size I have defined here is 2 ** 32, that is 4 GB, because with a 32-bit address space, the system can address only 4 GB worth of memory.
+
+The read and write methods are quite straightforward. I have decided that the memory implementation should be simple and return 1 byte of data per address.
+
+Now, the addressToIndex private method is quite interesting because it maps the binary type that I have implemented to an index in the array buffer. But the important part of this method is the exception it throws. Since we have a limited amount of memory, if we try to access memory beyond its capacity, an exception is raised to the CPU for that particular error condition.
 
 The way I have implemented this is:
 ```ts
@@ -78,9 +82,11 @@ export class HardwareExpection extends Error {
     }
 }
 ```
-I just have created a enum with all the hardware level exceptions. Right now I can only think of two, Memory Fault that is the indexing of invalid address which I had used, the other is also related to the addressing of the 3-4 bytes of memory but we will be implementing it latter. Now I just extented the generic Error class to have my own dedicated error thrown on hardware expections. Its simple and later we could add more to it so that it can be a gret debugging tool or atleast assistance for the debugger.
+I have simply created an enum with all the hardware-level exceptions. Right now I can think of only two. The first is MemoryFault, which is raised when an invalid memory address is accessed, and the second is AlignmentFault, which is also related to addressing 3- or 4-byte values in memory, but we will implement that later.
 
-The other helper funtions you see which are decimalToBinary and binaryToDecimal is as its names says as I have implemented is sch as:
+I then extended the generic Error class so that I can throw my own dedicated hardware exceptions. It's simple for now, but later we can add more information to it so that it becomes a great debugging tool, or at least a useful assistant for the debugger.
+
+The other helper functions you see, decimalToBinary and binaryToDecimal, do exactly what their names suggest. I have implemented them as follows:
 ```ts
 export function decimalToBinary(num: number, pad: number): Bit[] {
         const bin: Bit[] = [];
@@ -100,9 +106,12 @@ export function binaryToDecimal(bin: Bit[]): number {
     return [...bin].reverse().reduce((acc: number, cur: number, indx) => acc + (cur * (2 ** indx)), 0);
 }
 ```
-I think these functions dont need any explainations. Ok I think I have described enough of my doing for today. I dont know what I will be implementing next to be honest. One thing I will do is, first I will read a bunch of books relating to computer architecture and come back to you tommorow. Sounds like a plan right.
+I think these functions don't need any explanation.
 
-Till then, Cheers.
+I think I have described enough of what I did for today. To be honest, I don't know what I will be implementing next. One thing I will do is read a bunch of books related to computer architecture and come back to you tomorrow. Sounds like a plan, right?
+
+Till then, cheers.
+
 Have a good one.
 
-Om Namaha Shivaya.
+Om Namah Shivaya.

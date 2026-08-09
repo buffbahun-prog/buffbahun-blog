@@ -6,8 +6,16 @@
     <description>Recent content in Computer Architecture on Buffbahun Blogs</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 07 Aug 2026 09:11:35 +0545</lastBuildDate>
+    <lastBuildDate>Sun, 09 Aug 2026 11:18:38 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Day 4</title>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-4/</link>
+      <pubDate>Sun, 09 Aug 2026 11:18:38 +0545</pubDate>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-4/</guid>
+      <description>&lt;p&gt;As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.&lt;/p&gt;
+&lt;p&gt;We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It&amp;rsquo;s a hassle. So automation is required.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Day 3</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-3/</link>

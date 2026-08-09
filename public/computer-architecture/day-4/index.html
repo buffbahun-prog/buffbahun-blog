@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Day 4 | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.
+We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It&rsquo;s a hassle. So automation is required.">
+<meta name="author" content="">
+<link rel="canonical" href="https://buffbahun-blog.pages.dev/computer-architecture/day-4/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://buffbahun-blog.pages.dev/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://buffbahun-blog.pages.dev/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://buffbahun-blog.pages.dev/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://buffbahun-blog.pages.dev/apple-touch-icon.png">
+<link rel="mask-icon" href="https://buffbahun-blog.pages.dev/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://buffbahun-blog.pages.dev/computer-architecture/day-4/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://buffbahun-blog.pages.dev/computer-architecture/day-4/">
+  <meta property="og:site_name" content="Buffbahun Blogs">
+  <meta property="og:title" content="Day 4">
+  <meta property="og:description" content="As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.
+We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It’s a hassle. So automation is required.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="computer-architecture">
+    <meta property="article:published_time" content="2026-08-09T11:18:38+05:45">
+    <meta property="article:modified_time" content="2026-08-09T11:18:38+05:45">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Day 4">
+  <meta name="twitter:description" content="As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.
+We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It’s a hassle. So automation is required.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Day 4",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/day-4/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Day 4",
+  "name": "Day 4",
+  "description": "As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.\nWe have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It\u0026rsquo;s a hassle. So automation is required.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.\nWe have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It’s a hassle. So automation is required.\nAs we have already implemented a clock, which will work as a synchronizer across the whole circuit, this is indeed a step toward automation. Now, instead of manually inputting every number that we want to compute, we can use RAM to have a set of numbers and also a set of instructions the machine should follow. We can arrange both the code/instructions and the data in an order so that the machine can sequentially read the instructions with their arguments and execute them correctly.\nWe have also already implemented RAM, and we can visualize its structure as a long array from index 0 to n - 1, where each element contains a byte of data to store. So, we can surely put our program in sequential order, starting from memory index 0 and continuing until we halt, by incrementing the index by 1 or some arbitrary number on each clock cycle.\nSo, we get the idea for a circuit that, on each clock cycle, gives a value starting from 0, then one number more (which could be one or some constant number) than the previous value. This is called a program counter. The name itself gives the meaning. It is an incremental counter that sequentially gives the next index/address for the next instruction in the program.\nLet’s have a look at my implementation:\nexport class ProgramCounter extends register32 { constructor() { super(); } increment() { const currCounterVal = this.get(); const incBy = decimalToBinary(4, 32) as Bit32; // Instruction size is 4 bytes const nextCount = bitAdderSubstractor32(0, 0, currCounterVal, incBy)[0]; this.set(nextCount); } } I have extended the 32-bit register because all it is, is a register that stores a 32-bit number, which we intend to use as an address on the RAM. Now, for it to be a counter, I have implemented an increment method that gets the current number/address stored in its register and then updates the register with a constant number incremented. In this case, it is by 4 bytes every clock cycle because I have intended to make the instruction size exactly 4 bytes. So, on every clock cycle, the increment method is called so that we can move through the memory one instruction per cycle.\nIt is what I did today. I also updated the adderSubstractor function and made it more modular, as the circuit itself is implemented on the machine. I did this so that the different logical parts that we have implemented have a clear boundary. You can view the changes here in the adders.ts file.\nI will see you tomorrow, as I now want to study how the circuits are connected to all the logical parts we have built so far, and how it is correlated/mapped to an instruction.\nTill then, have a good one.\nCheers.\nOm Namah Shivaya.\n",
+  "wordCount" : "582",
+  "inLanguage": "en",
+  "datePublished": "2026-08-09T11:18:38+05:45",
+  "dateModified": "2026-08-09T11:18:38+05:45",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buffbahun-blog.pages.dev/computer-architecture/day-4/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Buffbahun Blogs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://buffbahun-blog.pages.dev/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://buffbahun-blog.pages.dev/" accesskey="h" title="Buffbahun Blogs (Alt + H)">Buffbahun Blogs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Day 4
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-08-09 11:18:38 +0545 +0545'>August 9, 2026</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><p>As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.</p>
+<p>We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It&rsquo;s a hassle. So automation is required.</p>
+<p>As we have already implemented a clock, which will work as a synchronizer across the whole circuit, this is indeed a step toward automation. Now, instead of manually inputting every number that we want to compute, we can use RAM to have a set of numbers and also a set of instructions the machine should follow. We can arrange both the code/instructions and the data in an order so that the machine can sequentially read the instructions with their arguments and execute them correctly.</p>
+<p>We have also already implemented RAM, and we can visualize its structure as a long array from index 0 to n - 1, where each element contains a byte of data to store. So, we can surely put our program in sequential order, starting from memory index 0 and continuing until we halt, by incrementing the index by 1 or some arbitrary number on each clock cycle.</p>
+<p>So, we get the idea for a circuit that, on each clock cycle, gives a value starting from 0, then one number more (which could be one or some constant number) than the previous value. This is called a program counter. The name itself gives the meaning. It is an incremental counter that sequentially gives the next index/address for the next instruction in the program.</p>
+<p>Let&rsquo;s have a look at my implementation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProgramCounter</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">register32</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">constructor</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">increment() {</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">currCounterVal</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#66d9ef">get</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">incBy</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">decimalToBinary</span>(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">32</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>; <span style="color:#75715e">// Instruction size is 4 bytes
+</span></span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextCount</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">bitAdderSubstractor32</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">currCounterVal</span>, <span style="color:#a6e22e">incBy</span>)[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#66d9ef">set</span>(<span style="color:#a6e22e">nextCount</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I have extended the 32-bit register because all it is, is a register that stores a 32-bit number, which we intend to use as an address on the RAM. Now, for it to be a counter, I have implemented an increment method that gets the current number/address stored in its register and then updates the register with a constant number incremented. In this case, it is by 4 bytes every clock cycle because I have intended to make the instruction size exactly 4 bytes. So, on every clock cycle, the increment method is called so that we can move through the memory one instruction per cycle.</p>
+<p>It is what I did today. I also updated the adderSubstractor function and made it more modular, as the circuit itself is implemented on the machine. I did this so that the different logical parts that we have implemented have a clear boundary. You can view the changes <a href="https://github.com/buffbahun-prog/she-is-the-booms/commit/2ac26bad06a4650508ddf895a83d84b5b8f93258#diff-91114871da01094c14ba9ba02f0b56fddd8234a14e291620be8c482ab1b1933e">here</a> in the adders.ts file.</p>
+<p>I will see you tomorrow, as I now want to study how the circuits are connected to all the logical parts we have built so far, and how it is correlated/mapped to an instruction.</p>
+<p>Till then, have a good one.</p>
+<p>Cheers.</p>
+<p>Om Namah Shivaya.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://buffbahun-blog.pages.dev/">Buffbahun Blogs</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

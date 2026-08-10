@@ -6,8 +6,15 @@
     <description>Recent content on Buffbahun Blogs</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Aug 2026 11:18:38 +0545</lastBuildDate>
+    <lastBuildDate>Mon, 10 Aug 2026 09:58:17 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Day 5</title>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-5/</link>
+      <pubDate>Mon, 10 Aug 2026 09:58:17 +0545</pubDate>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-5/</guid>
+      <description>&lt;p&gt;The previous day, we just began to automate our machine with a counter. It&amp;rsquo;s definitely a stepping stone. And we also introduced what an instruction might look like for our machine. Now suppose we have just added two values in registers r1 and r2 and stored the value in register r3 with an ADD instruction. Now suppose we want to store the added value in r3 to memory for later use. For this, we will have a STORE instruction that could take the value from the register and store it at a memory address.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Day 4</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-4/</link>

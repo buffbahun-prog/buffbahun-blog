@@ -136,64 +136,18 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Day 5
+    <h2 class="entry-hint-parent">Day 0
     </h2>
   </header>
   <div class="entry-content">
-    <p>The previous day, we just began to automate our machine with a counter. It’s definitely a stepping stone. And we also introduced what an instruction might look like for our machine. Now suppose we have just added two values in registers r1 and r2 and stored the value in register r3 with an ADD instruction. Now suppose we want to store the added value in r3 to memory for later use. For this, we will have a STORE instruction that could take the value from the register and store it at a memory address.
+    <p>The other day I was studying some algorithms used in the file system and buffers that the Unix system used. I was fascinated by the cleverness and engineering intuition behind the implementation. The engineer inside of me screamed in excitement, “Holy shit! This is the real deal.”
+Now I have a crazy idea. Why not build my own operating system from scratch? Sounds insane, right? Yes, this scares me. I have no idea whatsoever, but with the right knowledge and, most of all, the right mindset, I think this can be accomplished, though it may take years and years. This is why you are reading this, as this is me documenting my journey. So let’s dive into this voyage.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-08-10 09:58:17 +0545 +0545'>August 10, 2026</span></footer>
-  <a class="entry-link" aria-label="post link to Day 5" href="https://buffbahun-blog.pages.dev/computer-architecture/day-5/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Day 4
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.
-We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It’s a hassle. So automation is required.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-09 11:18:38 +0545 +0545'>August 9, 2026</span></footer>
-  <a class="entry-link" aria-label="post link to Day 4" href="https://buffbahun-blog.pages.dev/computer-architecture/day-4/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Day 3
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Yes, I have implemented RAM. First, I want you to have a look at it:
-export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array; private totalBytes: number; constructor() { // max address lane is 32 bits, so max ram size is 2 pow 32 this.totalBytes = Math.min(2 ** 32, 1 * 1024 * 1024); this.data = new SharedArrayBuffer(this.totalBytes); this.dataView = new Uint8Array(this.data); } getBuffer() { return this.data; } read8(address: Bit32) { const dataNum = this.dataView.at(this.addressToIndex(address)); if (dataNum !== undefined) { return decimalToBinary(dataNum, 8) as Bit8; } } write8(address: Bit32, data: Bit8) { const dataNum = binaryToDecimal(data); this.dataView[this.addressToIndex(address)] = dataNum; } private addressToIndex(address: Bit32): number { const index = binaryToDecimal(address); if (index &gt;= this.totalBytes) { throw new HardwareExpection( HardwareExceptionType.MemoryFault, `Invalid address to RAM: 0x${index.toString(16)}`, index ) } return index; } } Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-07 09:11:35 +0545 +0545'>August 7, 2026</span></footer>
-  <a class="entry-link" aria-label="post link to Day 3" href="https://buffbahun-blog.pages.dev/computer-architecture/day-3/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Day 2
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>I was very excited to learn how the heck, using just logic gates, we can build memory to store bits. It turns out that, using just two NOR gates, we can store 1 bit. The two NOR gates are configured such that one input of the gates is the set and reset input respectively, whereas the other inputs are connected to the output of the opposite gate. Now, connecting the input of one gate to the output of the other gate creates a kind of feedback loop by which the previous state of the circuit determines or influences the current state. It’s the nature of a feedback system.
-...</p>
-  </div>
-  <footer class="entry-footer">
-
-<span title='2026-08-06 10:07:19 +0545 +0545'>August 6, 2026</span></footer>
-  <a class="entry-link" aria-label="post link to Day 2" href="https://buffbahun-blog.pages.dev/computer-architecture/day-2/"></a>
+<span title='2026-08-04 14:52:46 +0545 +0545'>August 4, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 0" href="https://buffbahun-blog.pages.dev/computer-architecture/day-0/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -214,18 +168,64 @@ In my opinion, a computer is a glorified calculator. More specifically, it’s a
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Day 0
+    <h2 class="entry-hint-parent">Day 2
     </h2>
   </header>
   <div class="entry-content">
-    <p>The other day I was studying some algorithms used in the file system and buffers that the Unix system used. I was fascinated by the cleverness and engineering intuition behind the implementation. The engineer inside of me screamed in excitement, “Holy shit! This is the real deal.”
-Now I have a crazy idea. Why not build my own operating system from scratch? Sounds insane, right? Yes, this scares me. I have no idea whatsoever, but with the right knowledge and, most of all, the right mindset, I think this can be accomplished, though it may take years and years. This is why you are reading this, as this is me documenting my journey. So let’s dive into this voyage.
+    <p>I was very excited to learn how the heck, using just logic gates, we can build memory to store bits. It turns out that, using just two NOR gates, we can store 1 bit. The two NOR gates are configured such that one input of the gates is the set and reset input respectively, whereas the other inputs are connected to the output of the opposite gate. Now, connecting the input of one gate to the output of the other gate creates a kind of feedback loop by which the previous state of the circuit determines or influences the current state. It’s the nature of a feedback system.
 ...</p>
   </div>
   <footer class="entry-footer">
 
-<span title='2026-08-04 14:52:46 +0545 +0545'>August 4, 2026</span></footer>
-  <a class="entry-link" aria-label="post link to Day 0" href="https://buffbahun-blog.pages.dev/computer-architecture/day-0/"></a>
+<span title='2026-08-06 10:07:19 +0545 +0545'>August 6, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 2" href="https://buffbahun-blog.pages.dev/computer-architecture/day-2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 3
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Yes, I have implemented RAM. First, I want you to have a look at it:
+export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array; private totalBytes: number; constructor() { // max address lane is 32 bits, so max ram size is 2 pow 32 this.totalBytes = Math.min(2 ** 32, 1 * 1024 * 1024); this.data = new SharedArrayBuffer(this.totalBytes); this.dataView = new Uint8Array(this.data); } getBuffer() { return this.data; } read8(address: Bit32) { const dataNum = this.dataView.at(this.addressToIndex(address)); if (dataNum !== undefined) { return decimalToBinary(dataNum, 8) as Bit8; } } write8(address: Bit32, data: Bit8) { const dataNum = binaryToDecimal(data); this.dataView[this.addressToIndex(address)] = dataNum; } private addressToIndex(address: Bit32): number { const index = binaryToDecimal(address); if (index &gt;= this.totalBytes) { throw new HardwareExpection( HardwareExceptionType.MemoryFault, `Invalid address to RAM: 0x${index.toString(16)}`, index ) } return index; } } Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-07 09:11:35 +0545 +0545'>August 7, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 3" href="https://buffbahun-blog.pages.dev/computer-architecture/day-3/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 4
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.
+We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It’s a hassle. So automation is required.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-09 11:18:38 +0545 +0545'>August 9, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 4" href="https://buffbahun-blog.pages.dev/computer-architecture/day-4/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 5
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>The previous day, we just began to automate our machine with a counter. It’s definitely a stepping stone. And we also introduced what an instruction might look like for our machine. Now suppose we have just added two values in registers r1 and r2 and stored the value in register r3 with an ADD instruction. Now suppose we want to store the added value in r3 to memory for later use. For this, we will have a STORE instruction that could take the value from the register and store it at a memory address.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-10 09:58:17 +0545 +0545'>August 10, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to Day 5" href="https://buffbahun-blog.pages.dev/computer-architecture/day-5/"></a>
 </article>
     </main>
     

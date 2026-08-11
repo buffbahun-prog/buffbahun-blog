@@ -10,4 +10,4 @@ User-agent: *
 Allow: /
 
 # Tells Google exactly where to find your sitemap automatically
-Sitemap: https://yourdomain.com
+Sitemap: https://buffbahun-blog.pages.dev

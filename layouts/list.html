@@ -45,27 +45,37 @@
 {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
 {{- end }}
 
+{{- /* STEP 1: MODIFIED — Default Hugo layout order set to Oldest First */ -}}
 {{- $pages = $pages.ByDate }}
 
-{{- $paginator := .Paginate $pages }}
-
-{{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
+{{- if and .IsHome site.Params.homeInfoParams }}
 {{- partial "home_info.html" . }}
 {{- end }}
 
+{{- /* STEP 2: MODIFIED — Updated button initialization properties for ascending track */ -}}
+<div class="sort-controls" style="margin-bottom: 20px;">
+  <button id="sort-date-btn" data-order="asc" style="cursor: pointer; padding: 6px 12px; border: 1px solid var(--border); background: var(--theme); color: var(--primary); border-radius: 4px;">
+    Sort: Oldest First
+  </button>
+</div>
+
 {{- $term := .Data.Term }}
-{{- range $index, $page := $paginator.Pages }}
+
+{{- /* STEP 3: Wrap list container in an ID hook for DOM access */ -}}
+<div id="posts-container">
+{{- range $index, $page := $pages }}
 
 {{- $class := "post-entry" }}
 
 {{- $user_preferred := or site.Params.disableSpecial1stPost site.Params.homeInfoParams }}
-{{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred)) }}
+{{- if (and $.IsHome (eq $index 0) (not $user_preferred)) }}
 {{- $class = "first-entry" }}
 {{- else if $term }}
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
-<article class="{{ $class }}">
+{{- /* STEP 4: Added data-date using Unix timestamps for perfect sorting */ -}}
+<article class="{{ $class }}" data-date="{{ .Date.Unix }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
   <header class="entry-header">
@@ -94,29 +104,45 @@
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
 {{- end }}
+</div>
 
-{{- if gt $paginator.TotalPages 1 }}
-<footer class="page-footer">
-  <nav class="pagination">
-    {{- if $paginator.HasPrev }}
-    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
-      «&nbsp;{{ i18n "prev_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
-      {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
-      {{- end }}
-    </a>
-    {{- end }}
-    {{- if $paginator.HasNext }}
-    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
-      {{- i18n "next_page" }}&nbsp;
-      {{- if (.Param "ShowPageNums") }}
-      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
-      {{- end }}&nbsp;»
-    </a>
-    {{- end }}
-  </nav>
-</footer>
-{{- end }}
+{{- /* STEP 5: Inline Client-Side sorting engine script */ -}}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const sortBtn = document.getElementById('sort-date-btn');
+  if (!sortBtn) return;
+
+  sortBtn.addEventListener('click', function() {
+    const container = document.getElementById('posts-container');
+    
+    // Select both entry classes PaperMod uses to ensure we gather all layout elements
+    const postEntries = Array.from(container.getElementsByClassName('post-entry'));
+    const firstEntries = Array.from(container.getElementsByClassName('first-entry'));
+    const articles = [...firstEntries, ...postEntries];
+
+    const currentOrder = this.getAttribute('data-order');
+    
+    articles.sort((a, b) => {
+      const dateA = parseInt(a.getAttribute('data-date') || 0, 10);
+      const dateB = parseInt(b.getAttribute('data-date') || 0, 10);
+      
+      // MODIFIED — Inverted sorting rule matrix to toggle away from the ascending baseline
+      return currentOrder === 'asc' ? dateB - dateA : dateA - dateB;
+    });
+    
+    // MODIFIED — Shifted target text and order markers to complete the cycle
+    if (currentOrder === 'asc') {
+      this.setAttribute('data-order', 'desc');
+      this.textContent = 'Sort: Newest First';
+    } else {
+      this.setAttribute('data-order', 'asc');
+      this.textContent = 'Sort: Oldest First';
+    }
+    
+    articles.forEach(article => container.appendChild(article));
+  });
+});
+</script>
 
 {{- end }}{{/* end profileMode */}}
 

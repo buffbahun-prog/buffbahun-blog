@@ -163,6 +163,11 @@
 </header>
 <main class="main">
 
+
+<div id="scroll-progress-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 4px; background-color: transparent; z-index: 9999;">
+  <div id="scroll-progress-bar" style="height: 100%; width: 0%; background: var(--primary, #2483ff); transition: width 0.1s ease-out;"></div>
+</div>
+
 <article class="post-single">
   <header class="post-header">
     
@@ -213,6 +218,32 @@
     </ul>
   </footer>
 </article>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const progressBar = document.getElementById("scroll-progress-bar");
+  if (!progressBar) return;
+
+  let ticking = false;
+
+  function updateProgress() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight > 0) {
+      const progress = (window.scrollY / totalHeight) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", function() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }, { passive: true });
+});
+</script>
     </main>
     
 <footer class="footer">

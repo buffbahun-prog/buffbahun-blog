@@ -9,3 +9,4 @@ mainSections = [
 ]
 disableSpecial1stPost = true
 showReadingTime = true
+ShowCodeCopyButtons = true

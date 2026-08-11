@@ -216,6 +216,48 @@
   <footer class="post-footer">
     <ul class="post-tags">
     </ul>
+
+    
+    <style>
+      .nav-card {
+        flex: 1;
+        min-width: 250px;
+        padding: 15px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--primary);
+        background: var(--code-bg, transparent);
+        transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+      }
+      .nav-card:hover {
+        background: var(--sys-bg, var(--theme));
+        border-color: var(--primary);
+      }
+      .nav-card-prev:hover {
+        transform: translateX(-5px);
+      }
+      .nav-card-next:hover {
+        transform: translateX(5px);
+      }
+    </style>
+
+    
+    <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
+      
+      
+      <a class="nav-card nav-card-prev" href="https://buffbahun-blog.pages.dev/computer-architecture/day-1/">
+        <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">« PREVIOUS ARTICLE</span>
+        <strong>Day 1 — Binary Adder</strong>
+      </a>
+
+      
+      <a class="nav-card nav-card-next" href="https://buffbahun-blog.pages.dev/computer-architecture/day-3/" style="text-align: right;">
+        <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">NEXT ARTICLE »</span>
+        <strong>Day 3 — Memory</strong>
+      </a>
+      
+    </div>
   </footer>
 </article>
 

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Day 6 | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn&rsquo;t it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.">
+<meta name="author" content="">
+<link rel="canonical" href="https://buffbahun-blog.pages.dev/computer-architecture/day-6/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://buffbahun-blog.pages.dev/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://buffbahun-blog.pages.dev/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://buffbahun-blog.pages.dev/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://buffbahun-blog.pages.dev/apple-touch-icon.png">
+<link rel="mask-icon" href="https://buffbahun-blog.pages.dev/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://buffbahun-blog.pages.dev/computer-architecture/day-6/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta name="google-site-verification" content="SkGEUE798CAWpm3UC62wMp3WKrnOaTKok0udG7ADBDk" /><meta property="og:url" content="https://buffbahun-blog.pages.dev/computer-architecture/day-6/">
+  <meta property="og:site_name" content="Buffbahun Blogs">
+  <meta property="og:title" content="Day 6">
+  <meta property="og:description" content="Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn’t it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="computer-architecture">
+    <meta property="article:published_time" content="2026-08-11T09:22:56+05:45">
+    <meta property="article:modified_time" content="2026-08-11T09:22:56+05:45">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Day 6">
+  <meta name="twitter:description" content="Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn’t it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Day 6",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/day-6/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Day 6",
+  "name": "Day 6",
+  "description": "Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn\u0026rsquo;t it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn’t it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.\nThe selector and the possible output lines are the same as those of the multiplexer. The primary distinction is only that while the multiplexer had 2ⁿ inputs for n selectors and one output line, the demultiplexer has 2ⁿ outputs for n selectors and only one input line. The MUX selects one output from many inputs, while the DEMUX (short for demultiplexer) selects one from the many possible outputs.\nThis is quite a useful circuit, as it can be used for selecting a particular item from many possible items. Let’s, for example, say we have 8 total registers in our system, starting from r0 to r7. Now we have an instruction:\nLOAD r3, 0x127f Meaning, load the constant value 0x127f into register r3. Now, the data path from memory to all registers is a common one. But the data in the data path is only written to the registers whose write-enable input is set to Bit 1. Now, how do we write to that particular register among all these registers, which all have this common data path? Here is where the demux is particularly useful.\nNow, since there are 8 registers ranging from r0 to r7, we can map each register in binary form from 000 to 111, because 2 power 3 gives 8 possible values. So, we can map r0 to 000, r1 to 001, and so on until r7, which is 111. In our example above, r3 will be 011. Now, if we take this as the select input for the demux with n equal to 3, we will have 8 outputs. We can then connect each of the 8 outputs to the write-enable input of the registers serially, starting from the r0 register to r7 in sequential order.\nNow, when we have the above instruction LOAD r3, 0x127f, r3 will be mapped to 011, which, when given as input to the demux, will output 1 only to the r3’s write-enable input, so that only the r3 register writes the data to its register.\nLet’s have a look at the demux I have implemented:\nexport function demux1to2(dataInp: Bit, select: Bit): [Bit, Bit] { return [ andGate( dataInp, inverter(select), ), andGate( dataInp, select, ) ] } I have, for now, implemented the simplest demux, which is a 1-to-2 demux: 1 select input to 2 outputs. As there are two outputs, I have returned an array of two outputs. The use of the inverter on the select input in the first AND gate makes the first and second AND gates have opposite select inputs from each other, thus only one output is 1 while the other is guaranteed to be 0. Now, the AND gate which got its second input (select/inverted select) as 1 will output whatever the first input value is, i.e., the data input value. While the other AND gate, which surely got its second input as 0, will always return an output of 0, whatever the first input might be.\nAs you can see, I have implemented a lot of components and circuits till now. But now that I have many fundamental circuits/components needed to build a computer, I still have no idea how I would map the instructions to the data and control signals of all these components. From my perspective, this is the heart of the computer. I have planned to have an investigative look at the simple classic microprocessors from the past to get some ideas.\nSo, till then, have a good one.\nCheers.\nOm Namaha Shivaya.\n",
+  "wordCount" : "697",
+  "inLanguage": "en",
+  "datePublished": "2026-08-11T09:22:56+05:45",
+  "dateModified": "2026-08-11T09:22:56+05:45",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buffbahun-blog.pages.dev/computer-architecture/day-6/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Buffbahun Blogs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://buffbahun-blog.pages.dev/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://buffbahun-blog.pages.dev/" accesskey="h" title="Buffbahun Blogs (Alt + H)">Buffbahun Blogs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Day 6
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-08-11 09:22:56 +0545 +0545'>August 11, 2026</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><p>Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn&rsquo;t it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.</p>
+<p>The selector and the possible output lines are the same as those of the multiplexer. The primary distinction is only that while the multiplexer had 2ⁿ inputs for n selectors and one output line, the demultiplexer has 2ⁿ outputs for n selectors and only one input line. The MUX selects one output from many inputs, while the DEMUX (short for demultiplexer) selects one from the many possible outputs.</p>
+<p>This is quite a useful circuit, as it can be used for selecting a particular item from many possible items. Let&rsquo;s, for example, say we have 8 total registers in our system, starting from r0 to r7. Now we have an instruction:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOAD r3, 0x127f
+</span></span></code></pre></div><p>Meaning, load the constant value 0x127f into register r3. Now, the data path from memory to all registers is a common one. But the data in the data path is only written to the registers whose write-enable input is set to Bit 1. Now, how do we write to that particular register among all these registers, which all have this common data path? Here is where the demux is particularly useful.</p>
+<p>Now, since there are 8 registers ranging from r0 to r7, we can map each register in binary form from 000 to 111, because 2 power 3 gives 8 possible values. So, we can map r0 to 000, r1 to 001, and so on until r7, which is 111. In our example above, r3 will be 011. Now, if we take this as the select input for the demux with n equal to 3, we will have 8 outputs. We can then connect each of the 8 outputs to the write-enable input of the registers serially, starting from the r0 register to r7 in sequential order.</p>
+<p>Now, when we have the above instruction LOAD r3, 0x127f, r3 will be mapped to 011, which, when given as input to the demux, will output 1 only to the r3&rsquo;s write-enable input, so that only the r3 register writes the data to its register.</p>
+<p>Let&rsquo;s have a look at the demux I have implemented:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">demux1to2</span>(<span style="color:#a6e22e">dataInp</span>: <span style="color:#66d9ef">Bit</span>, <span style="color:#a6e22e">select</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> [<span style="color:#a6e22e">Bit</span>, <span style="color:#a6e22e">Bit</span>] {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">dataInp</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">select</span>),
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">dataInp</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">select</span>,
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I have, for now, implemented the simplest demux, which is a 1-to-2 demux: 1 select input to 2 outputs. As there are two outputs, I have returned an array of two outputs. The use of the inverter on the select input in the first AND gate makes the first and second AND gates have opposite select inputs from each other, thus only one output is 1 while the other is guaranteed to be 0. Now, the AND gate which got its second input (select/inverted select) as 1 will output whatever the first input value is, i.e., the data input value. While the other AND gate, which surely got its second input as 0, will always return an output of 0, whatever the first input might be.</p>
+<p>As you can see, I have implemented a lot of components and circuits till now. But now that I have many fundamental circuits/components needed to build a computer, I still have no idea how I would map the instructions to the data and control signals of all these components. From my perspective, this is the heart of the computer. I have planned to have an investigative look at the simple classic microprocessors from the past to get some ideas.</p>
+<p>So, till then, have a good one.</p>
+<p>Cheers.</p>
+<p>Om Namaha Shivaya.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://buffbahun-blog.pages.dev/">Buffbahun Blogs</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

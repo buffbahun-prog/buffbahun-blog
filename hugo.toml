@@ -10,3 +10,19 @@ mainSections = [
 disableSpecial1stPost = true
 showReadingTime = true
 ShowCodeCopyButtons = true
+  
+[params.footer]
+hideCopyright = false
+
+# Core social media profiles section
+[[params.socials]]
+name = "github"
+url = "https://github.com/buffbahun-prog"
+
+[[params.socials]]
+name = "email"
+url = "mailto:buffbahun@gmail.com"
+
+[[params.socials]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/asim-sapkota-b903ab227/"

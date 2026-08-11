@@ -9,21 +9,21 @@
     <lastBuildDate>Tue, 11 Aug 2026 09:22:56 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Day 6 | Demultiplexer</title>
+      <title>Day 6 — Demultiplexer</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-6/</link>
       <pubDate>Tue, 11 Aug 2026 09:22:56 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-6/</guid>
       <description>&lt;p&gt;Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn&amp;rsquo;t it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Day 5 | Multiplexer</title>
+      <title>Day 5 — Multiplexer</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-5/</link>
       <pubDate>Mon, 10 Aug 2026 09:58:17 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-5/</guid>
       <description>&lt;p&gt;The previous day, we just began to automate our machine with a counter. It&amp;rsquo;s definitely a stepping stone. And we also introduced what an instruction might look like for our machine. Now suppose we have just added two values in registers r1 and r2 and stored the value in register r3 with an ADD instruction. Now suppose we want to store the added value in r3 to memory for later use. For this, we will have a STORE instruction that could take the value from the register and store it at a memory address.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Day 4 | Program Counter</title>
+      <title>Day 4 — Program Counter</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-4/</link>
       <pubDate>Sun, 09 Aug 2026 11:18:38 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-4/</guid>
@@ -31,7 +31,7 @@
 &lt;p&gt;We have the tools necessary for computation, but as you can see, without a human punching in every number and setting/resetting circuits, no complex computation is possible yet. Taking multiplication as an example, we need to store one number in memory/register, enter another number as the input to the adder, sum it, then store the value in the accumulator, and repeat the process until the multiplication is complete. It&amp;rsquo;s a hassle. So automation is required.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Day 3 | Memory</title>
+      <title>Day 3 — Memory</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-3/</link>
       <pubDate>Fri, 07 Aug 2026 09:11:35 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-3/</guid>
@@ -79,14 +79,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Day 2 | Flipflops and Register</title>
+      <title>Day 2 — Flip-Flops and Register</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-2/</link>
       <pubDate>Thu, 06 Aug 2026 10:07:19 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-2/</guid>
       <description>&lt;p&gt;I was very excited to learn how the heck, using just logic gates, we can build memory to store bits. It turns out that, using just two NOR gates, we can store 1 bit. The two NOR gates are configured such that one input of the gates is the set and reset input respectively, whereas the other inputs are connected to the output of the opposite gate. Now, connecting the input of one gate to the output of the other gate creates a kind of feedback loop by which the previous state of the circuit determines or influences the current state. It&amp;rsquo;s the nature of a feedback system.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Day 1 | Binary Adder</title>
+      <title>Day 1 — Binary Adder</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-1/</link>
       <pubDate>Wed, 05 Aug 2026 09:17:32 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-1/</guid>
@@ -94,7 +94,7 @@
 &lt;p&gt;In my opinion, a computer is a glorified calculator. More specifically, it&amp;rsquo;s a high-speed adder, capable of doing millions and billions of additions per second. But you may ask, &amp;ldquo;Shut up! Computers do crazy calculations.&amp;rdquo; Yes, you are right, but every operation and calculation you think of can be, and is, derived from the addition operation.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Day 0 | Logic Gates</title>
+      <title>Day 0 — Logic Gates</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-0/</link>
       <pubDate>Tue, 04 Aug 2026 14:52:46 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-0/</guid>

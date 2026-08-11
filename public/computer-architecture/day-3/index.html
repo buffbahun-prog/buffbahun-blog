@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Day 3 | Memory | Buffbahun Blogs</title>
+<title>Day 3 — Memory | Buffbahun Blogs</title>
 <meta name="keywords" content="">
 <meta name="description" content="Yes, I have implemented RAM. First, I want you to have a look at it:
 export class RAM {
@@ -107,7 +107,7 @@ Whereas in the register I used an array variable to store the values, the RAM us
 
 </script><meta name="google-site-verification" content="SkGEUE798CAWpm3UC62wMp3WKrnOaTKok0udG7ADBDk" /><meta property="og:url" content="https://buffbahun-blog.pages.dev/computer-architecture/day-3/">
   <meta property="og:site_name" content="Buffbahun Blogs">
-  <meta property="og:title" content="Day 3 | Memory">
+  <meta property="og:title" content="Day 3 — Memory">
   <meta property="og:description" content="Yes, I have implemented RAM. First, I want you to have a look at it:
 export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array; private totalBytes: number; constructor() { // max address lane is 32 bits, so max ram size is 2 pow 32 this.totalBytes = Math.min(2 ** 32, 1 * 1024 * 1024); this.data = new SharedArrayBuffer(this.totalBytes); this.dataView = new Uint8Array(this.data); } getBuffer() { return this.data; } read8(address: Bit32) { const dataNum = this.dataView.at(this.addressToIndex(address)); if (dataNum !== undefined) { return decimalToBinary(dataNum, 8) as Bit8; } } write8(address: Bit32, data: Bit8) { const dataNum = binaryToDecimal(data); this.dataView[this.addressToIndex(address)] = dataNum; } private addressToIndex(address: Bit32): number { const index = binaryToDecimal(address); if (index &gt;= this.totalBytes) { throw new HardwareExpection( HardwareExceptionType.MemoryFault, `Invalid address to RAM: 0x${index.toString(16)}`, index ) } return index; } } Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.">
   <meta property="og:locale" content="en_us">
@@ -117,7 +117,7 @@ export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array
     <meta property="article:modified_time" content="2026-08-07T09:11:35+05:45">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Day 3 | Memory">
+  <meta name="twitter:title" content="Day 3 — Memory">
   <meta name="twitter:description" content="Yes, I have implemented RAM. First, I want you to have a look at it:
 export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array; private totalBytes: number; constructor() { // max address lane is 32 bits, so max ram size is 2 pow 32 this.totalBytes = Math.min(2 ** 32, 1 * 1024 * 1024); this.data = new SharedArrayBuffer(this.totalBytes); this.dataView = new Uint8Array(this.data); } getBuffer() { return this.data; } read8(address: Bit32) { const dataNum = this.dataView.at(this.addressToIndex(address)); if (dataNum !== undefined) { return decimalToBinary(dataNum, 8) as Bit8; } } write8(address: Bit32, data: Bit8) { const dataNum = binaryToDecimal(data); this.dataView[this.addressToIndex(address)] = dataNum; } private addressToIndex(address: Bit32): number { const index = binaryToDecimal(address); if (index &gt;= this.totalBytes) { throw new HardwareExpection( HardwareExceptionType.MemoryFault, `Invalid address to RAM: 0x${index.toString(16)}`, index ) } return index; } } Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.">
 
@@ -136,7 +136,7 @@ export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "Day 3 | Memory",
+      "name": "Day 3 — Memory",
       "item": "https://buffbahun-blog.pages.dev/computer-architecture/day-3/"
     }
   ]
@@ -146,8 +146,8 @@ export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Day 3 | Memory",
-  "name": "Day 3 | Memory",
+  "headline": "Day 3 — Memory",
+  "name": "Day 3 — Memory",
   "description": "Yes, I have implemented RAM. First, I want you to have a look at it:\nexport class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array; private totalBytes: number; constructor() { // max address lane is 32 bits, so max ram size is 2 pow 32 this.totalBytes = Math.min(2 ** 32, 1 * 1024 * 1024); this.data = new SharedArrayBuffer(this.totalBytes); this.dataView = new Uint8Array(this.data); } getBuffer() { return this.data; } read8(address: Bit32) { const dataNum = this.dataView.at(this.addressToIndex(address)); if (dataNum !== undefined) { return decimalToBinary(dataNum, 8) as Bit8; } } write8(address: Bit32, data: Bit8) { const dataNum = binaryToDecimal(data); this.dataView[this.addressToIndex(address)] = dataNum; } private addressToIndex(address: Bit32): number { const index = binaryToDecimal(address); if (index \u0026gt;= this.totalBytes) { throw new HardwareExpection( HardwareExceptionType.MemoryFault, `Invalid address to RAM: 0x${index.toString(16)}`, index ) } return index; } } Whereas in the register I used an array variable to store the values, the RAM uses SharedArrayBuffer. It is similar to ArrayBuffer, which is a raw binary buffer. The array buffer is quite similar to real memory because it is also laid out contiguously in memory, one byte after another, just like actual RAM. Thus, it provides good performance when accessing and manipulating the buffer.\n",
   "keywords": [
     
@@ -210,7 +210,7 @@ export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      Day 3 | Memory
+      Day 3 — Memory
     </h1>
     <div class="post-meta">
 

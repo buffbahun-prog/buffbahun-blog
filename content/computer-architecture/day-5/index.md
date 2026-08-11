@@ -1,7 +1,7 @@
 +++
 date = '2026-08-10T09:58:17+05:45'
 draft = false
-title = 'Day 5 | Multiplexer'
+title = 'Day 5 — Multiplexer'
 +++
 
 The previous day, we just began to automate our machine with a counter. It's definitely a stepping stone. And we also introduced what an instruction might look like for our machine. Now suppose we have just added two values in registers r1 and r2 and stored the value in register r3 with an ADD instruction. Now suppose we want to store the added value in r3 to memory for later use. For this, we will have a STORE instruction that could take the value from the register and store it at a memory address.

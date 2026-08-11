@@ -1,7 +1,7 @@
 +++
 date = '2026-08-05T09:17:32+05:45'
 draft = false
-title = 'Day 1 | Binary Adder'
+title = 'Day 1 — Binary Adder'
 +++
 
 As we are building a computer, though it's virtual, from the ground up, we should all ask ourselves a question. What actually is a computer? Hmm, time to think deep.

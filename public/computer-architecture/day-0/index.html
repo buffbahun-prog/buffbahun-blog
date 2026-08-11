@@ -171,9 +171,59 @@ Now I have a crazy idea. Why not build my own operating system from scratch? Sou
   <div id="scroll-progress-bar" style="height: 100%; width: 0%; background: var(--primary, #2483ff); transition: width 0.1s ease-out;"></div>
 </div>
 
+
+<style>
+  .back-to-section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  .back-to-section-link:hover {
+    color: var(--primary);
+    transform: translateX(-4px);
+  }
+  .nav-card {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary);
+    background: var(--code-bg, transparent);
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-card:hover {
+    background: var(--sys-bg, var(--theme));
+    border-color: var(--primary);
+  }
+  .nav-card-prev:hover {
+    transform: translateX(-5px);
+  }
+  .nav-card-next:hover {
+    transform: translateX(5px);
+  }
+</style>
+
 <article class="post-single">
   <header class="post-header">
     
+    
+    
+      <a href="https://buffbahun-blog.pages.dev/computer-architecture/" class="back-to-section-link" aria-label="Back to Computer Architecture">
+        <svg xmlns="http://w3.org" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Computer Architecture</span>
+      </a>
+
     <h1 class="post-title entry-hint-parent">
       Day 0 — Logic Gates
     </h1>
@@ -234,31 +284,6 @@ Now I have a crazy idea. Why not build my own operating system from scratch? Sou
   <footer class="post-footer">
     <ul class="post-tags">
     </ul>
-
-    
-    <style>
-      .nav-card {
-        flex: 1;
-        min-width: 250px;
-        padding: 15px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        text-decoration: none;
-        color: var(--primary);
-        background: var(--code-bg, transparent);
-        transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-      }
-      .nav-card:hover {
-        background: var(--sys-bg, var(--theme));
-        border-color: var(--primary);
-      }
-      .nav-card-prev:hover {
-        transform: translateX(-5px);
-      }
-      .nav-card-next:hover {
-        transform: translateX(5px);
-      }
-    </style>
 
     
     <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">

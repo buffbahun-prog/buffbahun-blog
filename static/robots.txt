@@ -1,0 +1,13 @@
+# As a condition of accessing this website, you agree to abide by the following
+# content signals:
+# [ ... keep your existing legal text here if you want to ... ]
+
+# ----------------------------------------
+# STANDARD CRAWLER DIRECTIVES (ADD THESE)
+# ----------------------------------------
+
+User-agent: *
+Allow: /
+
+# Tells Google exactly where to find your sitemap automatically
+Sitemap: https://yourdomain.com

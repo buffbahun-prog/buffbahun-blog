@@ -249,6 +249,31 @@ export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array
   .nav-card-next:hover {
     transform: translateX(5px);
   }
+  
+   
+  .audio-container {
+    margin: 20px 0 25px 0;
+    padding: 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .audio-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .audio-player-element {
+    width: 100%;
+    height: 40px;
+    outline: none;
+  }
 </style>
 
 <article class="post-single">
@@ -272,6 +297,9 @@ export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array
 <span title='2026-08-07 09:11:35 +0545 +0545'>August 7, 2026</span>&nbsp;·&nbsp;<span>4 min</span>
 
 </div>
+
+    
+
   </header> 
   <div class="post-content md-content"><p>Yes, I have implemented RAM. First, I want you to have a look at it:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RAM</span> {
@@ -376,19 +404,14 @@ export class RAM { private data: SharedArrayBuffer; private dataView: Uint8Array
 
     
     <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
-      
-      
       <a class="nav-card nav-card-prev" href="https://buffbahun-blog.pages.dev/computer-architecture/day-2/">
         <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">« PREVIOUS ARTICLE</span>
         <strong>Day 2 — Flip-Flops and Register</strong>
       </a>
-
-      
       <a class="nav-card nav-card-next" href="https://buffbahun-blog.pages.dev/computer-architecture/day-4/" style="text-align: right;">
         <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">NEXT ARTICLE »</span>
         <strong>Day 4 — Program Counter</strong>
       </a>
-      
     </div>
   </footer>
 </article>

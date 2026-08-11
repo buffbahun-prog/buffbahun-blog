@@ -206,6 +206,31 @@
   .nav-card-next:hover {
     transform: translateX(5px);
   }
+  
+   
+  .audio-container {
+    margin: 20px 0 25px 0;
+    padding: 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .audio-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .audio-player-element {
+    width: 100%;
+    height: 40px;
+    outline: none;
+  }
 </style>
 
 <article class="post-single">
@@ -229,6 +254,9 @@
 <span title='2026-08-10 09:58:17 +0545 +0545'>August 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span>
 
 </div>
+
+    
+
   </header> 
   <div class="post-content md-content"><p>The previous day, we just began to automate our machine with a counter. It&rsquo;s definitely a stepping stone. And we also introduced what an instruction might look like for our machine. Now suppose we have just added two values in registers r1 and r2 and stored the value in register r3 with an ADD instruction. Now suppose we want to store the added value in r3 to memory for later use. For this, we will have a STORE instruction that could take the value from the register and store it at a memory address.</p>
 <p>So, visualizing this, we actually have two paths/sources that can directly access the address lines in the memory. The program counter has its output line connected to the address line input of the memory, and just now we found out that we also want the address line of memory to be connected with the register&rsquo;s output line.</p>
@@ -274,19 +302,14 @@
 
     
     <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
-      
-      
       <a class="nav-card nav-card-prev" href="https://buffbahun-blog.pages.dev/computer-architecture/day-4/">
         <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">« PREVIOUS ARTICLE</span>
         <strong>Day 4 — Program Counter</strong>
       </a>
-
-      
       <a class="nav-card nav-card-next" href="https://buffbahun-blog.pages.dev/computer-architecture/day-6/" style="text-align: right;">
         <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">NEXT ARTICLE »</span>
         <strong>Day 6 — Demultiplexer</strong>
       </a>
-      
     </div>
   </footer>
 </article>

@@ -206,6 +206,31 @@
   .nav-card-next:hover {
     transform: translateX(5px);
   }
+  
+   
+  .audio-container {
+    margin: 20px 0 25px 0;
+    padding: 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .audio-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .audio-player-element {
+    width: 100%;
+    height: 40px;
+    outline: none;
+  }
 </style>
 
 <article class="post-single">
@@ -229,6 +254,9 @@
 <span title='2026-08-06 10:07:19 +0545 +0545'>August 6, 2026</span>&nbsp;·&nbsp;<span>3 min</span>
 
 </div>
+
+    
+
   </header> 
   <div class="post-content md-content"><p>I was very excited to learn how the heck, using just logic gates, we can build memory to store bits. It turns out that, using just two NOR gates, we can store 1 bit. The two NOR gates are configured such that one input of the gates is the set and reset input respectively, whereas the other inputs are connected to the output of the opposite gate. Now, connecting the input of one gate to the output of the other gate creates a kind of feedback loop by which the previous state of the circuit determines or influences the current state. It&rsquo;s the nature of a feedback system.</p>
 <p>Now there are two outputs from this circuit configuration, and the two outputs are always opposite to each other. They are denoted by Q and Q&rsquo;. Similarly, the set and reset inputs of the circuit should also always be opposite, such that when set is 1, reset should be 0, so that the output Q is 1 whereas Q&rsquo; is 0. For the case where set is 0, reset should be 1, so that the output Q is 0 and Q&rsquo; is 1.</p>
@@ -269,19 +297,14 @@
 
     
     <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
-      
-      
       <a class="nav-card nav-card-prev" href="https://buffbahun-blog.pages.dev/computer-architecture/day-1/">
         <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">« PREVIOUS ARTICLE</span>
         <strong>Day 1 — Binary Adder</strong>
       </a>
-
-      
       <a class="nav-card nav-card-next" href="https://buffbahun-blog.pages.dev/computer-architecture/day-3/" style="text-align: right;">
         <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">NEXT ARTICLE »</span>
         <strong>Day 3 — Memory</strong>
       </a>
-      
     </div>
   </footer>
 </article>

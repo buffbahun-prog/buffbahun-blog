@@ -8,3 +8,4 @@ mainSections = [
     "operating-system"
 ]
 disableSpecial1stPost = true
+showReadingTime = true

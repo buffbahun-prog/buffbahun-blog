@@ -1,7 +1,7 @@
 +++
 date = '2026-08-09T11:18:38+05:45'
 draft = false
-title = 'Day 4'
+title = 'Day 4 | Program Counter'
 +++
 
 As I was studying computer architecture, we implemented logical gates, combined logical gates to build an adder circuit, implemented flip-flops with a combination of logical gates to store a bit of information, and by combining multiple flip-flops, we implemented registers and memory.

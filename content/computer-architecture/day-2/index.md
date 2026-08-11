@@ -1,7 +1,7 @@
 +++
 date = '2026-08-06T10:07:19+05:45'
 draft = false
-title = 'Day 2'
+title = 'Day 2 | Flipflops and Register'
 +++
 
 I was very excited to learn how the heck, using just logic gates, we can build memory to store bits. It turns out that, using just two NOR gates, we can store 1 bit. The two NOR gates are configured such that one input of the gates is the set and reset input respectively, whereas the other inputs are connected to the output of the opposite gate. Now, connecting the input of one gate to the output of the other gate creates a kind of feedback loop by which the previous state of the circuit determines or influences the current state. It's the nature of a feedback system.

@@ -1,7 +1,7 @@
 +++
 date = '2026-08-04T14:52:46+05:45'
 draft = false
-title = 'Day 0'
+title = 'Day 0 | Logic Gates'
 +++
 
 The other day I was studying some algorithms used in the file system and buffers that the Unix system used. I was fascinated by the cleverness and engineering intuition behind the implementation. The engineer inside of me screamed in excitement, "Holy shit! This is the real deal."

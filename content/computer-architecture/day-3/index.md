@@ -1,7 +1,7 @@
 +++
 date = '2026-08-07T09:11:35+05:45'
 draft = false
-title = 'Day 3'
+title = 'Day 3 | Memory'
 +++
 
 Yes, I have implemented RAM. First, I want you to have a look at it:

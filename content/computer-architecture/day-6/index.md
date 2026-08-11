@@ -1,7 +1,7 @@
 +++
 date = '2026-08-11T09:22:56+05:45'
 draft = false
-title = 'Day 6'
+title = 'Day 6 | Demultiplexer'
 +++
 
 Yesterday, we got into detail about multiplexers. Now, you might be thinking that with n select inputs, we could output any of the 2ⁿ data inputs through a single output line. Now, isn't it possible that we could pass the data from a single input to any of the multiple output lines? Think of it this way: while with a multiplexer we narrowed multiple input lines down to a single output line with a selector, similarly, we could have a device that does the exact opposite. It takes a single input data line and, with the proper selector bits, passes it to one output line among the multiple ones. And this is called a demultiplexer.

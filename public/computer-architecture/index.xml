@@ -6,8 +6,15 @@
     <description>Recent content in Computer Architecture on Buffbahun Blogs</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Aug 2026 09:22:56 +0545</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 10:03:16 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Day 7 | Logical Left Shifter</title>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-7/</link>
+      <pubDate>Thu, 13 Aug 2026 10:03:16 +0545</pubDate>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-7/</guid>
+      <description>&lt;p&gt;As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on &amp;lsquo;N&amp;rsquo; number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Day 6 — Demultiplexer</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-6/</link>

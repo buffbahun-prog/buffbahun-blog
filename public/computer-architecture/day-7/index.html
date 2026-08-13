@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Day 7 | Logical Left Shifter | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on &lsquo;N&rsquo; number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.">
+<meta name="author" content="">
+<link rel="canonical" href="https://buffbahun-blog.pages.dev/computer-architecture/day-7/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://buffbahun-blog.pages.dev/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://buffbahun-blog.pages.dev/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://buffbahun-blog.pages.dev/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://buffbahun-blog.pages.dev/apple-touch-icon.png">
+<link rel="mask-icon" href="https://buffbahun-blog.pages.dev/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://buffbahun-blog.pages.dev/computer-architecture/day-7/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta name="google-site-verification" content="SkGEUE798CAWpm3UC62wMp3WKrnOaTKok0udG7ADBDk" /><meta property="og:url" content="https://buffbahun-blog.pages.dev/computer-architecture/day-7/">
+  <meta property="og:site_name" content="Buffbahun Blogs">
+  <meta property="og:title" content="Day 7 | Logical Left Shifter">
+  <meta property="og:description" content="As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on ‘N’ number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="computer-architecture">
+    <meta property="article:published_time" content="2026-08-13T10:03:16+05:45">
+    <meta property="article:modified_time" content="2026-08-13T10:03:16+05:45">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Day 7 | Logical Left Shifter">
+  <meta name="twitter:description" content="As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on ‘N’ number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Day 7 | Logical Left Shifter",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/day-7/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Day 7 | Logical Left Shifter",
+  "name": "Day 7 | Logical Left Shifter",
+  "description": "As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on \u0026lsquo;N\u0026rsquo; number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on ‘N’ number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.\nI want to explain this with a simple example. Suppose we have an 8-bit binary number:\n11111111 Now I want to move/shift every bit to the left side, so what happens? As the leftmost bit shifts from its current position to the position on the left, the bit overflows because there are only 8 bits, and it is gone for good. Now the next bit gets to the leftmost position vacated by the previous bit while shifting. This ripples all the way to the rightmost bit. Now notice that the rightmost position is vacant, as its bit moved to the left due to shifting, so we insert a 0 bit into the vacant position.\n1 1 1 1 1 1 1 1 \u003c- overflowed 1 1 1 1 1 1 1 1 _ empty due to shifting 1 1 1 1 1 1 1 0 The above example is a simple one because we shifted the bits just once, but we can shift it by ‘N’ number of times. As we shifted the number just once in the above example, when shifting by ‘N’, the leftmost N bits get overflowed and discarded, while the rightmost N bits will be 0 due to the shifting.\nLeft Shift by 2 1 1 1 1 1 1 1 1 \u003c- overflowed 1 1 1 1 1 1 1 1 _ _ empty due to shifting 1 1 1 1 1 1 0 0 And as there are 8 bit positions in the above number, after the 8th shift and beyond, the value becomes 00000000 because its maximum possible shift is 8, as there are only 8 bits. Beyond this, no matter what the shifting value is, it is 00000000.\nWhy is it useful, you ask? As it turns out, left shifting produces a value double its input value, which is equivalent to multiplying the previous value by 2. And in the case of shifting by multiple positions, it gives us powers of 2. Okay, I will prove it with an example.\n00010110 decimal value 22 leftshift by 1 00101100 decimal value 44 (22 * 2 = 44) leftshift by 2 01011000 decimal value 88 (22 * (2 power 2) = 44) 00000001 decimal value 1 (2 power 0 = 1) leftshift by 1 00000010 decimal value 2 (2 power 1 = 2) leftshift by 2 00000100 decimal value 4 (2 power 2 = 4) leftshift by 3 00001000 decimal value 8 (2 power 3 = 8) leftshift by 4 00010000 decimal value 16 (2 power 4 = 16) Then, after I was quite surprised by these results, my mind shifted (seriously, not a pun) towards implementing it. But how, exactly? The answer lies in selecting/picking a bit and changing its position. And what do we have in our tools for selecting a particular bit? Yes, the multiplexer.\nThink of the shift-by number as the select input of the multiplexer. Now, for example, say we have 8-bit input data, so we know that there are 3 select inputs, from 000 (0) to 111 (7). As we already know, a multiplexer outputs just one bit among the 8 data input bits, based on the select input. From this logic, we know that select input 000 outputs the leftmost bit, 001 the one just after the leftmost bit, and so on, until 111 gives the bit at the last/rightmost position of the data input.\nOkay, now building on this logic. Suppose we bring in 8 of these 8-to-1 multiplexers. Think of it this way: when we say left shift by zero, we shift it 0 times, i.e. we don’t shift it, and the output is the same as the input. Mapping shift-by-zero to the select input of the multiplexers gives us 000. Then, with these 8 multiplexers sharing the same select input, which is 000 in this condition, how should they be connected to output the same value as the input? Let’s connect a multiplexer to the data input in the same order, from bit position 0 to 7, and intend this multiplexer to output the leftmost shifted output bit. When select input 000 (shifting by 0) is given, the data input connected to the first input of this multiplexer has its leftmost bit ([1]1111111) connected to it. So obviously, it will output the leftmost bit when shifting by 0 (that is, select input 000).\nSimilarly, with the same mindset, let’s think about how the second multiplexer should be configured. Now, as we have already said, on shifting by zero (select input 000), the multiplexer should output the bit just after the leftmost bit (1[1]111111). For this, we should connect the first input of the multiplexer to the second-index bit, with the other bits connected serially, mapping with the data value. Now you will notice that the last bit, i.e. the 7th position, has nothing to connect to because we started from the second bit. And as we have already stated, the empty bits after shifting are replaced by 0, so a 0-bit connection is given to it.\nSimilarly, with the third multiplexer, using the same logic, we will have the first input for the multiplexer connected to the 3rd bit input line (11[1]11111), and its remaining 2 last inputs replaced by 0-bit connections. I think you see the pattern through all 8 multiplexers. Now, combining the 8 outputs from the 8 multiplexers, the first multiplexer that we configured with its 1st input line connected to the 1st data input will produce the leftmost bit, and the last one will produce the rightmost bit.\nHonestly, it took me some days to get it properly, as I was trying to discover it from first principles. You can try this method; it’s quite helpful.\nWe should now look at the implementation that I programmed:\nexport function logicalLeftShifter(data: Bit32, shiftBy: Bit32): Bit32 { // if shift value larger then 2^5 - 1, return 0 const validShiftStartIndx = 32 - 5; const isValidShift = inverter( orGateNInp(shiftBy.slice(0, validShiftStartIndx)) ); const selectionBits = shiftBy.slice(validShiftStartIndx) as Bit5; return data.map((_, indx) =\u003e { const bit0Array = Array.from({length: indx}).fill(0) as Bit[]; const dataForMux = [...data.slice(indx), ...bit0Array] as Bit32; const shiftedBit = mux32To1(dataForMux, selectionBits); return andGate(shiftedBit, isValidShift); }) as Bit32; } As I have already discussed above, the output will be zero for a shift-by value above the total length of bits present in the data input. In our implementation, as there is a 32-bit input line, 0 to 31 are the valid shift-by values. So we just take the rightmost (least significant) slice from the 32-bit shift-by input, and if the high-significant bits have at least one bit with value 1, that means the value is greater than 31. With the AND gate at the end, we output 0 bits in the case of invalid shift-by values.\nApart from this, the implementation is simple enough. For the 32-bit data input, I have mapped each multiplexer with the correct configuration, starting with the leftmost bit at the proper position of the data input and filling the rightmost positions with 0 bits according to the position of the data input and output.\nOne extra thing I did was implement the 32-to-1 multiplexer. It’s a large function, so don’t get overwhelmed; it’s simple and carries the same logic as the simplest 2-to-1 multiplexer. One other extra gate I added for this multiplexer is the N-input gate. We have our useful, simplest, and most-used 2-input gates, but we also require gates with multiple inputs. So have a look at it:\nexport function mux32To1(data: Bit32, selectBits: Bit5): Bit { return orGateNInp([ // for select value 00000, the first bit in the data should be selected // so all the select inputs inverted andGateNInp([ data[0], ...selectBits.map(bit =\u003e inverter(bit)), ]), // for select value 00001, only the first 4 bits needed to be inverted andGateNInp([ data[1], ...selectBits.map((bit, indx) =\u003e indx !== 4 ? inverter(bit) : bit), ]), // for select value 00010, except 3rd index bit other needed to be inverted andGateNInp([ data[2], ...selectBits.map((bit, indx) =\u003e indx !== 3 ? inverter(bit) : bit), ]), // for select value 00011, except 3rd and 4th index bit other needed to be inverted andGateNInp([ data[3], ...selectBits.map((bit, indx) =\u003e indx !== 3 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 00100, except 2nd index bit other needed to be inverted andGateNInp([ data[4], ...selectBits.map((bit, indx) =\u003e indx !== 2 ? inverter(bit) : bit), ]), // for select value 00101, except 2nd and 4th index bit other needed to be inverted andGateNInp([ data[5], ...selectBits.map((bit, indx) =\u003e indx !== 2 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 00110, except 2nd and 3rd index bit other needed to be inverted andGateNInp([ data[6], ...selectBits.map((bit, indx) =\u003e indx !== 2 \u0026\u0026 indx !== 3 ? inverter(bit) : bit), ]), // for select value 00111, except 2nd, 3rd and 4th index bit other needed to be inverted andGateNInp([ data[7], ...selectBits.map((bit, indx) =\u003e indx !== 2 \u0026\u0026 indx !== 3 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 01000, except 1st index bit other needed to be inverted andGateNInp([ data[8], ...selectBits.map((bit, indx) =\u003e indx !== 1 ? inverter(bit) : bit), ]), // for select value 01001, except 1st and 4th index bit other needed to be inverted andGateNInp([ data[9], ...selectBits.map((bit, indx) =\u003e indx !== 1 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 01010, except 1st and 3rd index bit other needed to be inverted andGateNInp([ data[10], ...selectBits.map((bit, indx) =\u003e indx !== 1 \u0026\u0026 indx !== 3 ? inverter(bit) : bit), ]), // for select value 01011, except 1st, 3rd and 4th index bit other needed to be inverted andGateNInp([ data[11], ...selectBits.map((bit, indx) =\u003e indx !== 1 \u0026\u0026 indx !== 3 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 01100, except 1st and 2nd index bit other needed to be inverted andGateNInp([ data[12], ...selectBits.map((bit, indx) =\u003e indx !== 1 \u0026\u0026 indx !== 2 ? inverter(bit) : bit), ]), // for select value 01101, except 1st, 2nd and 4th index bit other needed to be inverted andGateNInp([ data[13], ...selectBits.map((bit, indx) =\u003e indx !== 1 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 01110, except 1st, 2nd and 3rd index bit other needed to be inverted andGateNInp([ data[14], ...selectBits.map((bit, indx) =\u003e indx !== 1 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 3 ? inverter(bit) : bit), ]), // for select value 01111, except 1st, 2nd, 3rd and 4th index bit other needed to be inverted andGateNInp([ data[15], ...selectBits.map((bit, indx) =\u003e indx !== 1 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 3 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 10000, except 0th index bit other needed to be inverted andGateNInp([ data[16], ...selectBits.map((bit, indx) =\u003e indx !== 0 ? inverter(bit) : bit), ]), // for select value 10001, except 0th and 4th index bit other needed to be inverted andGateNInp([ data[17], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 10010, except 0th and 3rd index bit other needed to be inverted andGateNInp([ data[18], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 3 ? inverter(bit) : bit), ]), // for select value 10011, except 0th, 3rd and 4th index bit other needed to be inverted andGateNInp([ data[19], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 3 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 10100, except 0th and 2nd index bit other needed to be inverted andGateNInp([ data[20], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 2 ? inverter(bit) : bit), ]), // for select value 10101, except 0th, 2nd and 4th index bit other needed to be inverted andGateNInp([ data[21], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 10110, except 0th, 2nd and 3rd index bit other needed to be inverted andGateNInp([ data[22], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 3 ? inverter(bit) : bit), ]), // for select value 10111, except 0th, 2nd, 3rd and 4th index bit other needed to be inverted andGateNInp([ data[23], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 3 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 11000, except 0th and 1st index bit other needed to be inverted andGateNInp([ data[24], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 1 ? inverter(bit) : bit), ]), // for select value 11001, except 0th, 1st and 4th index bit other needed to be inverted andGateNInp([ data[25], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 1 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 11010, except 0th, 1st and 3rd index bit other needed to be inverted andGateNInp([ data[26], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 1 \u0026\u0026 indx !== 3 ? inverter(bit) : bit), ]), // for select value 11011, except 0th, 1st, 3rd and 4th index bit other needed to be inverted andGateNInp([ data[27], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 1 \u0026\u0026 indx !== 3 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 11100, except 0th, 1st and 2nd index bit other needed to be inverted andGateNInp([ data[28], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 1 \u0026\u0026 indx !== 2 ? inverter(bit) : bit), ]), // for select value 11101, except 0th, 1st, 2nd and 4th index bit other needed to be inverted andGateNInp([ data[29], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 1 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 4 ? inverter(bit) : bit), ]), // for select value 11110, except 0th, 1st, 2nd and 3th index bit other needed to be inverted andGateNInp([ data[30], ...selectBits.map((bit, indx) =\u003e indx !== 0 \u0026\u0026 indx !== 1 \u0026\u0026 indx !== 2 \u0026\u0026 indx !== 3 ? inverter(bit) : bit), ]), // for select value 11111, nothing need to be inverted andGateNInp([ data[31], ...selectBits, ]), ]); } See, it’s the same as a 2-to-1 multiplexer, just larger because of the 32 AND gates that needed to be added for the 32 input lines. That’s it.\nOkay, I think it’s time to end today’s talk. After today’s left shifter, you may be asking, if there is left shifting going on, then what about right shifting, thus the Logical Right Shifter? Wouldn’t that exist? Yes, you are right to have this question. And I promise you, tomorrow we will get the Right Shifter done right!\nTill then, have a good one. Cheers.\nOm Namaha Shivaya.\n",
+  "wordCount" : "2565",
+  "inLanguage": "en",
+  "datePublished": "2026-08-13T10:03:16+05:45",
+  "dateModified": "2026-08-13T10:03:16+05:45",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buffbahun-blog.pages.dev/computer-architecture/day-7/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Buffbahun Blogs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://buffbahun-blog.pages.dev/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://buffbahun-blog.pages.dev/" accesskey="h" title="Buffbahun Blogs (Alt + H)">Buffbahun Blogs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+
+<div id="scroll-progress-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 4px; background-color: transparent; z-index: 9999;">
+  <div id="scroll-progress-bar" style="height: 100%; width: 0%; background: var(--primary, #2483ff); transition: width 0.1s ease-out;"></div>
+</div>
+
+
+<style>
+  .back-to-section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  .back-to-section-link:hover {
+    color: var(--primary);
+    transform: translateX(-4px);
+  }
+  .nav-card {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary);
+    background: var(--code-bg, transparent);
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-card:hover {
+    background: var(--sys-bg, var(--theme));
+    border-color: var(--primary);
+  }
+  .nav-card-prev:hover {
+    transform: translateX(-5px);
+  }
+  .nav-card-next:hover {
+    transform: translateX(5px);
+  }
+  
+   
+  .audio-container {
+    margin: 20px 0 25px 0;
+    padding: 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .audio-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .audio-player-element {
+    width: 100%;
+    height: 40px;
+    outline: none;
+  }
+</style>
+
+<article class="post-single">
+  <header class="post-header">
+    
+    
+    
+      <a href="https://buffbahun-blog.pages.dev/computer-architecture/" class="back-to-section-link" aria-label="Back to Computer Architecture">
+        <svg xmlns="http://w3.org" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Computer Architecture</span>
+      </a>
+
+    <h1 class="post-title entry-hint-parent">
+      Day 7 | Logical Left Shifter
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-08-13 10:03:16 +0545 +0545'>August 13, 2026</span>&nbsp;·&nbsp;<span>13 min</span>
+
+</div>
+
+    
+
+  </header> 
+  <div class="post-content md-content"><p>As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on &lsquo;N&rsquo; number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.</p>
+<p>I want to explain this with a simple example. Suppose we have an 8-bit binary number:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>11111111
+</span></span></code></pre></div><p>Now I want to move/shift every bit to the left side, so what happens? As the leftmost bit shifts from its current position to the position on the left, the bit overflows because there are only 8 bits, and it is gone for good. Now the next bit gets to the leftmost position vacated by the previous bit while shifting. This ripples all the way to the rightmost bit. Now notice that the rightmost position is vacant, as its bit moved to the left due to shifting, so we insert a 0 bit into the vacant position.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>               1 1 1 1 1 1 1 1 &lt;-
+</span></span><span style="display:flex;"><span>overflowed   1 1 1 1 1 1 1 1 _ empty due to shifting
+</span></span><span style="display:flex;"><span>               1 1 1 1 1 1 1 0
+</span></span></code></pre></div><p>The above example is a simple one because we shifted the bits just once, but we can shift it by &lsquo;N&rsquo; number of times. As we shifted the number just once in the above example, when shifting by &lsquo;N&rsquo;, the leftmost N bits get overflowed and discarded, while the rightmost N bits will be 0 due to the shifting.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>               Left Shift by 2
+</span></span><span style="display:flex;"><span>               1 1 1 1 1 1 1 1 &lt;-
+</span></span><span style="display:flex;"><span>overflowed 1 1 1 1 1 1 1 1 _ _ empty due to shifting
+</span></span><span style="display:flex;"><span>               1 1 1 1 1 1 0 0
+</span></span></code></pre></div><p>And as there are 8 bit positions in the above number, after the 8th shift and beyond, the value becomes 00000000 because its maximum possible shift is 8, as there are only 8 bits. Beyond this, no matter what the shifting value is, it is 00000000.</p>
+<p>Why is it useful, you ask? As it turns out, left shifting produces a value double its input value, which is equivalent to multiplying the previous value by 2. And in the case of shifting by multiple positions, it gives us powers of 2. Okay, I will prove it with an example.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                    00010110  decimal value 22
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    leftshift by 1  00101100  decimal value 44 (22 * 2 = 44)              
+</span></span><span style="display:flex;"><span>    leftshift by 2  01011000  decimal value 88 (22 * (2 power 2) = 44)              
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                     00000001  decimal value 1 (2 power 0 = 1)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    leftshift by 1   00000010  decimal value 2  (2 power 1 = 2)
+</span></span><span style="display:flex;"><span>    leftshift by 2   00000100  decimal value 4  (2 power 2 = 4)
+</span></span><span style="display:flex;"><span>    leftshift by 3   00001000  decimal value 8  (2 power 3 = 8)
+</span></span><span style="display:flex;"><span>    leftshift by 4   00010000  decimal value 16 (2 power 4 = 16)
+</span></span></code></pre></div><p>Then, after I was quite surprised by these results, my mind shifted (seriously, not a pun) towards implementing it. But how, exactly? The answer lies in selecting/picking a bit and changing its position. And what do we have in our tools for selecting a particular bit? Yes, the multiplexer.</p>
+<p>Think of the shift-by number as the select input of the multiplexer. Now, for example, say we have 8-bit input data, so we know that there are 3 select inputs, from 000 (0) to 111 (7). As we already know, a multiplexer outputs just one bit among the 8 data input bits, based on the select input. From this logic, we know that select input 000 outputs the leftmost bit, 001 the one just after the leftmost bit, and so on, until 111 gives the bit at the last/rightmost position of the data input.</p>
+<p>Okay, now building on this logic. Suppose we bring in 8 of these 8-to-1 multiplexers. Think of it this way: when we say left shift by zero, we shift it 0 times, i.e. we don&rsquo;t shift it, and the output is the same as the input. Mapping shift-by-zero to the select input of the multiplexers gives us 000. Then, with these 8 multiplexers sharing the same select input, which is 000 in this condition, how should they be connected to output the same value as the input? Let&rsquo;s connect a multiplexer to the data input in the same order, from bit position 0 to 7, and intend this multiplexer to output the leftmost shifted output bit. When select input 000 (shifting by 0) is given, the data input connected to the first input of this multiplexer has its leftmost bit ([1]1111111) connected to it. So obviously, it will output the leftmost bit when shifting by 0 (that is, select input 000).</p>
+<p>Similarly, with the same mindset, let&rsquo;s think about how the second multiplexer should be configured. Now, as we have already said, on shifting by zero (select input 000), the multiplexer should output the bit just after the leftmost bit (1[1]111111). For this, we should connect the first input of the multiplexer to the second-index bit, with the other bits connected serially, mapping with the data value. Now you will notice that the last bit, i.e. the 7th position, has nothing to connect to because we started from the second bit. And as we have already stated, the empty bits after shifting are replaced by 0, so a 0-bit connection is given to it.</p>
+<p>Similarly, with the third multiplexer, using the same logic, we will have the first input for the multiplexer connected to the 3rd bit input line (11[1]11111), and its remaining 2 last inputs replaced by 0-bit connections. I think you see the pattern through all 8 multiplexers. Now, combining the 8 outputs from the 8 multiplexers, the first multiplexer that we configured with its 1st input line connected to the 1st data input will produce the leftmost bit, and the last one will produce the rightmost bit.</p>
+<p>Honestly, it took me some days to get it properly, as I was trying to discover it from first principles. You can try this method; it&rsquo;s quite helpful.</p>
+<p>We should now look at the implementation that I programmed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">logicalLeftShifter</span>(<span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">Bit32</span>, <span style="color:#a6e22e">shiftBy</span>: <span style="color:#66d9ef">Bit32</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit32</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// if shift value larger then 2^5 - 1, return 0
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">validShiftStartIndx</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isValidShift</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">inverter</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">orGateNInp</span>(<span style="color:#a6e22e">shiftBy</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">validShiftStartIndx</span>))
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">selectionBits</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shiftBy</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#a6e22e">validShiftStartIndx</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit5</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">bit0Array</span> <span style="color:#f92672">=</span> Array.<span style="color:#66d9ef">from</span>({<span style="color:#a6e22e">length</span>: <span style="color:#66d9ef">indx</span>}).<span style="color:#a6e22e">fill</span>(<span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit</span>[];
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">dataForMux</span> <span style="color:#f92672">=</span> [...<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#a6e22e">indx</span>), ...<span style="color:#a6e22e">bit0Array</span>] <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftedBit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux32To1</span>(<span style="color:#a6e22e">dataForMux</span>, <span style="color:#a6e22e">selectionBits</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">andGate</span>(<span style="color:#a6e22e">shiftedBit</span>, <span style="color:#a6e22e">isValidShift</span>);
+</span></span><span style="display:flex;"><span>    }) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>As I have already discussed above, the output will be zero for a shift-by value above the total length of bits present in the data input. In our implementation, as there is a 32-bit input line, 0 to 31 are the valid shift-by values. So we just take the rightmost (least significant) slice from the 32-bit shift-by input, and if the high-significant bits have at least one bit with value 1, that means the value is greater than 31. With the AND gate at the end, we output 0 bits in the case of invalid shift-by values.</p>
+<p>Apart from this, the implementation is simple enough. For the 32-bit data input, I have mapped each multiplexer with the correct configuration, starting with the leftmost bit at the proper position of the data input and filling the rightmost positions with 0 bits according to the position of the data input and output.</p>
+<p>One extra thing I did was implement the 32-to-1 multiplexer. It&rsquo;s a large function, so don&rsquo;t get overwhelmed; it&rsquo;s simple and carries the same logic as the simplest 2-to-1 multiplexer. One other extra gate I added for this multiplexer is the N-input gate. We have our useful, simplest, and most-used 2-input gates, but we also require gates with multiple inputs. So have a look at it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">mux32To1</span>(<span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">Bit32</span>, <span style="color:#a6e22e">selectBits</span>: <span style="color:#66d9ef">Bit5</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">orGateNInp</span>([
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00000, the first bit in the data should be selected
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// so all the select inputs inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">bit</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>)),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00001, only the first 4 bits needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00010, except 3rd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">2</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00011, except 3rd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">3</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00100, except 2nd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">4</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00101, except 2nd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">5</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00110, except 2nd and 3rd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">6</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 00111, except 2nd, 3rd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">7</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01000, except 1st index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">8</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01001, except 1st and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">9</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01010, except 1st and 3rd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">10</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01011, except 1st, 3rd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">11</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01100, except 1st and 2nd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">12</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01101, except 1st, 2nd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">13</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01110, except 1st, 2nd and 3rd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">14</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 01111, except 1st, 2nd, 3rd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">15</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10000, except 0th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">16</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10001, except 0th and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">17</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10010, except 0th and 3rd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">18</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10011, except 0th, 3rd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">19</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10100, except 0th and 2nd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">20</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10101, except 0th, 2nd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">21</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10110, except 0th, 2nd and 3rd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">22</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 10111, except 0th, 2nd, 3rd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">23</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11000, except 0th and 1st index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">24</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11001, except 0th, 1st and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">25</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11010, except 0th, 1st and 3rd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">26</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11011, except 0th, 1st, 3rd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">27</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11100, except 0th, 1st and 2nd index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">28</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11101, except 0th, 1st, 2nd and 4th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">29</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11110, except 0th, 1st, 2nd and 3th index bit other needed to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">30</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">indx</span> <span style="color:#f92672">!==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">bit</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">bit</span>),
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// for select value 11111, nothing need to be inverted
+</span></span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">31</span>],
+</span></span><span style="display:flex;"><span>            ...<span style="color:#a6e22e">selectBits</span>,
+</span></span><span style="display:flex;"><span>        ]),
+</span></span><span style="display:flex;"><span>    ]);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>See, it&rsquo;s the same as a 2-to-1 multiplexer, just larger because of the 32 AND gates that needed to be added for the 32 input lines. That&rsquo;s it.</p>
+<p>Okay, I think it&rsquo;s time to end today&rsquo;s talk. After today&rsquo;s left shifter, you may be asking, if there is left shifting going on, then what about right shifting, thus the Logical Right Shifter? Wouldn&rsquo;t that exist? Yes, you are right to have this question. And I promise you, tomorrow we will get the Right Shifter done right!</p>
+<p>Till then, have a good one.
+Cheers.</p>
+<p>Om Namaha Shivaya.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+    
+    <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
+      <a class="nav-card nav-card-prev" href="https://buffbahun-blog.pages.dev/computer-architecture/day-6/">
+        <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">« PREVIOUS ARTICLE</span>
+        <strong>Day 6 — Demultiplexer</strong>
+      </a>
+      <div style="flex: 1; min-width: 250px;"></div>
+    </div>
+  </footer>
+</article>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const progressBar = document.getElementById("scroll-progress-bar");
+  if (!progressBar) return;
+
+  let ticking = false;
+
+  function updateProgress() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight > 0) {
+      const progress = (window.scrollY / totalHeight) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", function() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }, { passive: true });
+});
+</script>
+    </main>
+    
+<footer class="footer" style="padding: 30px 20px; text-align: center;">
+    
+    
+    <style>
+        .footer-social-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: var(--main-width, 1000px);
+            margin: 0 auto 20px auto;
+            gap: 28px;
+            flex-direction: row;
+        }
+        .social-link-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+            text-transform: capitalize;
+        }
+        .social-link-item:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .social-link-item svg {
+            fill: currentColor;
+            width: 18px;
+            height: 18px;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .footer-social-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+
+    
+    <div class="footer-social-row">
+        <a href="https://github.com/buffbahun-prog" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="github">
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+            
+            <span>github</span>
+        </a>
+        <a href="mailto:buffbahun@gmail.com" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="email">
+            
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            
+            <span>email</span>
+        </a>
+        <a href="https://www.linkedin.com/in/asim-sapkota-b903ab227/" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="linkedin">
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+            
+            <span>linkedin</span>
+        </a>
+    </div>
+
+    
+    <div style="font-size: 0.8rem; color: var(--secondary);">
+        <span>&copy; 2026 <a href="https://buffbahun-blog.pages.dev/">Buffbahun Blogs</a></span> · 
+    </div>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

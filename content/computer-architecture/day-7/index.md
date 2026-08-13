@@ -1,7 +1,7 @@
 +++
 date = '2026-08-13T10:03:16+05:45'
 draft = false
-title = 'Day 7 | Logical Left Shifter'
+title = 'Day 7 — Logical Left Shifter'
 +++
 
 As usual, I was doing my study on the microprocessor and computer architecture. I was skimming through the ALU part, and as far as my understanding went, I had already implemented the adder. For logical operations, it seemed pretty obvious: the whole CPU/computer is built upon the foundation of these logical gates, so the Logic Unit must contain these gates to operate on 'N' number of inputs. But I was wrong, or rather, I had no idea about other binary operations that might be useful enough to be implemented at the hardware level with dedicated circuitry. The first one I encountered was the Logical Shifter.

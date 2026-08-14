@@ -6,8 +6,19 @@
     <description>Recent content in Computer Architecture on Buffbahun Blogs</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 13 Aug 2026 10:03:16 +0545</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 10:58:48 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Day 8 — Logical Right Shifter</title>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-8/</link>
+      <pubDate>Fri, 14 Aug 2026 10:58:48 +0545</pubDate>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-8/</guid>
+      <description>&lt;p&gt;As promised, I have come up with an elegant solution for implementing the right shifter.&lt;/p&gt;
+&lt;p&gt;Initially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:&lt;/p&gt;
+&lt;p&gt;Isn&amp;rsquo;t right shifting just the reverse—or perhaps the exact opposite—of left shifting?&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s investigate it ourselves.&lt;/p&gt;
+&lt;p&gt;Say we have an 8-bit binary number:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Day 7 — Logical Left Shifter</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-7/</link>

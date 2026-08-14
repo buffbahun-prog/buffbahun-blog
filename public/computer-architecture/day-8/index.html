@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Day 8 — Logical Right Shifter | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="As promised, I have come up with an elegant solution for implementing the right shifter.
+Initially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:
+Isn&rsquo;t right shifting just the reverse—or perhaps the exact opposite—of left shifting?
+Let&rsquo;s investigate it ourselves.
+Say we have an 8-bit binary number:">
+<meta name="author" content="">
+<link rel="canonical" href="https://buffbahun-blog.pages.dev/computer-architecture/day-8/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://buffbahun-blog.pages.dev/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://buffbahun-blog.pages.dev/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://buffbahun-blog.pages.dev/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://buffbahun-blog.pages.dev/apple-touch-icon.png">
+<link rel="mask-icon" href="https://buffbahun-blog.pages.dev/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://buffbahun-blog.pages.dev/computer-architecture/day-8/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta name="google-site-verification" content="SkGEUE798CAWpm3UC62wMp3WKrnOaTKok0udG7ADBDk" /><meta property="og:url" content="https://buffbahun-blog.pages.dev/computer-architecture/day-8/">
+  <meta property="og:site_name" content="Buffbahun Blogs">
+  <meta property="og:title" content="Day 8 — Logical Right Shifter">
+  <meta property="og:description" content="As promised, I have come up with an elegant solution for implementing the right shifter.
+Initially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:
+Isn’t right shifting just the reverse—or perhaps the exact opposite—of left shifting?
+Let’s investigate it ourselves.
+Say we have an 8-bit binary number:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="computer-architecture">
+    <meta property="article:published_time" content="2026-08-14T10:58:48+05:45">
+    <meta property="article:modified_time" content="2026-08-14T10:58:48+05:45">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Day 8 — Logical Right Shifter">
+  <meta name="twitter:description" content="As promised, I have come up with an elegant solution for implementing the right shifter.
+Initially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:
+Isn’t right shifting just the reverse—or perhaps the exact opposite—of left shifting?
+Let’s investigate it ourselves.
+Say we have an 8-bit binary number:">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Day 8 — Logical Right Shifter",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/day-8/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Day 8 — Logical Right Shifter",
+  "name": "Day 8 — Logical Right Shifter",
+  "description": "As promised, I have come up with an elegant solution for implementing the right shifter.\nInitially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:\nIsn\u0026rsquo;t right shifting just the reverse—or perhaps the exact opposite—of left shifting?\nLet\u0026rsquo;s investigate it ourselves.\nSay we have an 8-bit binary number:\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "As promised, I have come up with an elegant solution for implementing the right shifter.\nInitially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:\nIsn’t right shifting just the reverse—or perhaps the exact opposite—of left shifting?\nLet’s investigate it ourselves.\nSay we have an 8-bit binary number:\n11110000 1 1 1 1 0 0 0 0 bit0 bit1 bit2 bit3 bit4 bit5 bit6 bit7 We have positioned the bits from index 0 to index 7, from the higher-precedence bit to the lower-precedence bit.\nNow say we want to right shift it by 1.\nLet’s first reverse its position so that the lower-precedence bit goes to position 0, and eventually the higher-precedence bit goes to position 7.\n11110000 | v reverse its position | v 00001111 The next step is to left shift it by 1, since we have already reversed its position.\n11110000 | v reverse its position | v 00001111 | v left shift by 1 | v 00011110 Now, to get the value we actually want, we need to reverse it again.\n11110000 | v reverse its position | v 00001111 | v left shift by 1 | v 00011110 | v again reverse its position | v 01111000 Voilà! We correctly get the right-shifted value.\nWith mathematics, we have figured out the inverse relationship between the two shifters. This can be written as:\nRSHIFT(data, shiftBy) = REVERSE( LSHIFT( REVERSE(data), shiftBy ) ) This is not an uncommon idea in mathematics or engineering. Very often, when two operations have a strong structural relationship, we can transform one operation into another instead of independently implementing both.\nWe can see a similar idea when thinking about addition and subtraction.\nConsider the number line, an infinite line stretching from negative infinity to positive infinity, with the origin at 0.\n----|---|---|---|---|---|---|---|---|---|---|------------------------ -4 -3 -2 -1 0 1 2 3 4 5 6 We can think of addition as movement along this number line.\nWhen we say +5, we move 5 positions to the right from 0.\nWhen we say -5, we move 5 positions to the left.\nNow consider:\n5 + 3 We first move 5 positions to the right:\n0 → 1 → 2 → 3 → 4 → 5 -2 Then, because we are adding 3, we move another 3 positions to the right:\n5 → 6 → 7 → 8 So we arrive at 8.\nNow consider subtraction:\n5 - 3 Subtraction can be understood as adding the inverse of a number:\n5 - 3 = 5 + (-3) = 2 On the number line, -3 simply means moving three positions in the opposite direction:\n5 → 4 → 3 → 2 So again, we arrive at the correct answer.\nThe important insight here isn’t that we should literally implement subtraction by reversing a number and then adding it. Rather, it is that mathematical transformations can sometimes let us express one operation in terms of another operation we already have.\nAnd that is exactly the insight we are exploiting with our shifter.\nApplying the insight to our circuit\nWith the theory out of the way, let’s look at the implementation I came up with by applying the same inversion principle.\nexport function logicalShifter(data: Bit32, shiftBy: Bit32, shiftDir: Bit): Bit32 { // if shift value larger then 2^5 - 1, return 0 const validShiftStartIndx = 32 - 5; const isValidShift = inverter( orGateNInp(shiftBy.slice(0, validShiftStartIndx)) ); const selectionBits = shiftBy.slice(validShiftStartIndx) as Bit5; const selectedDirData = data.map((dt, indx) =\u003e mux2To1( dt, data[data.length - (indx + 1)], shiftDir // shiftDir = 0 is left shift, 1 is right shift )) as Bit32; const shiftMuxOutputData = selectedDirData.map((_, indx) =\u003e { const bit0Array = Array.from({length: indx}).fill(0) as Bit[]; const dataForMux = [...selectedDirData.slice(indx), ...bit0Array] as Bit32; const shiftedBit = mux32To1(dataForMux, selectionBits); return andGate(shiftedBit, isValidShift); }) as Bit32; return shiftMuxOutputData.map((dt, indx) =\u003e mux2To1( dt, shiftMuxOutputData[shiftMuxOutputData.length - (indx + 1)], shiftDir // shiftDir = 0 is left shift, 1 is right shift, on right shift reverse the reversed data )) as Bit32; } You will notice that I have removed—or, rather, modified—the previous left shifter I had made by adding the position-inversion multiplexers to both the input and output ends of the main left-shifter multiplexer network.\nWe now have an additional argument, shiftDir.\nWhen shiftDir is 0, it means left shift.\nWhen shiftDir is 1, it means right shift.\nThis value is fed into the 2-to-1 multiplexers that control the position inversion.\nThe first input to each multiplexer is the data value wired in its original position, while the second input is the exact opposite position from the original.\nFor example:\nOriginal: bit0 bit1 bit2 bit3 A B C D Reversed: bit0 bit1 bit2 bit3 D C B A Therefore, when shiftDir is 0, we get the unaltered data input.\nWhen shiftDir is 1, we get the position-inverted data input.\nNow we reach the middle layer, where our original left-shifter circuitry resides.\nIt doesn’t care about the direction of the shift.\nIt simply shifts the supplied data to the left according to the shiftBy value.\nAnd finally, at the output, we have another set of the same position-inversion multiplexers.\nThis is where the inversion introduced at the input is reversed.\nSo, when performing a left shift:\noriginal data ↓ no inversion ↓ left shift ↓ no inversion ↓ result The middle shifter simply performs the left shift we intended.\nFor a right shift:\noriginal data ↓ position inversion ↓ left shift ↓ position inversion ↓ result The data is first position-inverted, the existing left-shifter shifts the inverted data, and finally the second inversion restores the original orientation.\nTherefore, we have implemented both left and right shifting using the same underlying shifter circuitry.\nThe main takeaway\nI think I will end it here for today.\nAlthough the implementation itself didn’t take much time and looks relatively simple, the mathematical insight is the main topic of today’s work.\nWithout this insight, we could have built another right-shifter circuit, potentially as large as the left-shifter circuit we already had.\nInstead, we recognized the relationship:\nRSHIFT(data, shiftBy) = REVERSE( LSHIFT( REVERSE(data), shiftBy ) ) and reused the existing circuitry.\nThis is one of the things I am beginning to appreciate about computer architecture.\nThe complexity isn’t always in the number of gates we need to build. Sometimes the biggest reduction in complexity comes from finding the right relationship between operations.\nAnd this is exactly why I want to approach the architecture from first principles rather than simply looking up the circuit and reproducing it.\nI will see you tomorrow.\nTill then, have a good one.\nCheers.\nOm Namah Shivaya.\n",
+  "wordCount" : "1126",
+  "inLanguage": "en",
+  "datePublished": "2026-08-14T10:58:48+05:45",
+  "dateModified": "2026-08-14T10:58:48+05:45",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buffbahun-blog.pages.dev/computer-architecture/day-8/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Buffbahun Blogs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://buffbahun-blog.pages.dev/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://buffbahun-blog.pages.dev/" accesskey="h" title="Buffbahun Blogs (Alt + H)">Buffbahun Blogs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+
+<div id="scroll-progress-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 4px; background-color: transparent; z-index: 9999;">
+  <div id="scroll-progress-bar" style="height: 100%; width: 0%; background: var(--primary, #2483ff); transition: width 0.1s ease-out;"></div>
+</div>
+
+
+<style>
+  .back-to-section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  .back-to-section-link:hover {
+    color: var(--primary);
+    transform: translateX(-4px);
+  }
+  .nav-card {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary);
+    background: var(--code-bg, transparent);
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-card:hover {
+    background: var(--sys-bg, var(--theme));
+    border-color: var(--primary);
+  }
+  .nav-card-prev:hover {
+    transform: translateX(-5px);
+  }
+  .nav-card-next:hover {
+    transform: translateX(5px);
+  }
+  
+   
+  .audio-container {
+    margin: 20px 0 25px 0;
+    padding: 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .audio-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .audio-player-element {
+    width: 100%;
+    height: 40px;
+    outline: none;
+  }
+</style>
+
+<article class="post-single">
+  <header class="post-header">
+    
+    
+    
+      <a href="https://buffbahun-blog.pages.dev/computer-architecture/" class="back-to-section-link" aria-label="Back to Computer Architecture">
+        <svg xmlns="http://w3.org" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Computer Architecture</span>
+      </a>
+
+    <h1 class="post-title entry-hint-parent">
+      Day 8 — Logical Right Shifter
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-08-14 10:58:48 +0545 +0545'>August 14, 2026</span>&nbsp;·&nbsp;<span>6 min</span>
+
+</div>
+
+    
+
+  </header> 
+  <div class="post-content md-content"><p>As promised, I have come up with an elegant solution for implementing the right shifter.</p>
+<p>Initially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:</p>
+<p>Isn&rsquo;t right shifting just the reverse—or perhaps the exact opposite—of left shifting?</p>
+<p>Let&rsquo;s investigate it ourselves.</p>
+<p>Say we have an 8-bit binary number:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>11110000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>1     1    1    1    0    0    0    0
+</span></span><span style="display:flex;"><span>bit0 bit1 bit2 bit3 bit4 bit5 bit6 bit7
+</span></span></code></pre></div><p>We have positioned the bits from index 0 to index 7, from the higher-precedence bit to the lower-precedence bit.</p>
+<p>Now say we want to right shift it by 1.</p>
+<p>Let&rsquo;s first reverse its position so that the lower-precedence bit goes to position 0, and eventually the higher-precedence bit goes to position 7.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> 11110000
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span>reverse its position
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span> 00001111
+</span></span></code></pre></div><p>The next step is to left shift it by 1, since we have already reversed its position.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> 11110000
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span>reverse its position
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span> 00001111
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span>left shift by 1
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span> 00011110
+</span></span></code></pre></div><p>Now, to get the value we actually want, we need to reverse it again.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>11110000
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span>reverse its position
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span> 00001111
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span>left shift by 1
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span> 00011110
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span>again reverse its position
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span> 01111000
+</span></span></code></pre></div><p>Voilà! We correctly get the right-shifted value.</p>
+<p>With mathematics, we have figured out the inverse relationship between the two shifters. This can be written as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>RSHIFT(data, shiftBy)
+</span></span><span style="display:flex;"><span>=
+</span></span><span style="display:flex;"><span>REVERSE(
+</span></span><span style="display:flex;"><span>    LSHIFT(
+</span></span><span style="display:flex;"><span>        REVERSE(data),
+</span></span><span style="display:flex;"><span>        shiftBy
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>This is not an uncommon idea in mathematics or engineering. Very often, when two operations have a strong structural relationship, we can transform one operation into another instead of independently implementing both.</p>
+<p>We can see a similar idea when thinking about addition and subtraction.</p>
+<p>Consider the number line, an infinite line stretching from negative infinity to positive infinity, with the origin at 0.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>----|---|---|---|---|---|---|---|---|---|---|------------------------
+</span></span><span style="display:flex;"><span>   -4  -3  -2  -1   0   1   2   3   4   5   6
+</span></span></code></pre></div><p>We can think of addition as movement along this number line.</p>
+<p>When we say +5, we move 5 positions to the right from 0.</p>
+<p>When we say -5, we move 5 positions to the left.</p>
+<p>Now consider:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>5 + 3
+</span></span></code></pre></div><p>We first move 5 positions to the right:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 → 1 → 2 → 3 → 4 → 5
+</span></span><span style="display:flex;"><span>-2
+</span></span></code></pre></div><p>Then, because we are adding 3, we move another 3 positions to the right:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>5 → 6 → 7 → 8
+</span></span></code></pre></div><p>So we arrive at 8.</p>
+<p>Now consider subtraction:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>5 - 3
+</span></span></code></pre></div><p>Subtraction can be understood as adding the inverse of a number:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>5 - 3
+</span></span><span style="display:flex;"><span>=
+</span></span><span style="display:flex;"><span>5 + (-3)
+</span></span><span style="display:flex;"><span>=
+</span></span><span style="display:flex;"><span>2
+</span></span></code></pre></div><p>On the number line, -3 simply means moving three positions in the opposite direction:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>5 → 4 → 3 → 2
+</span></span></code></pre></div><p>So again, we arrive at the correct answer.</p>
+<p>The important insight here isn&rsquo;t that we should literally implement subtraction by reversing a number and then adding it. Rather, it is that mathematical transformations can sometimes let us express one operation in terms of another operation we already have.</p>
+<p>And that is exactly the insight we are exploiting with our shifter.</p>
+<p>Applying the insight to our circuit</p>
+<p>With the theory out of the way, let&rsquo;s look at the implementation I came up with by applying the same inversion principle.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">logicalShifter</span>(<span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">Bit32</span>, <span style="color:#a6e22e">shiftBy</span>: <span style="color:#66d9ef">Bit32</span>, <span style="color:#a6e22e">shiftDir</span>: <span style="color:#66d9ef">Bit</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit32</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// if shift value larger then 2^5 - 1, return 0
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">validShiftStartIndx</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isValidShift</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">inverter</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">orGateNInp</span>(<span style="color:#a6e22e">shiftBy</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">validShiftStartIndx</span>))
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">selectionBits</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shiftBy</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#a6e22e">validShiftStartIndx</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit5</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">selectedDirData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">dt</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">dt</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> (<span style="color:#a6e22e">indx</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftDir</span> <span style="color:#75715e">// shiftDir = 0 is left shift, 1 is right shift
+</span></span></span><span style="display:flex;"><span>    )) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftMuxOutputData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">selectedDirData</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">bit0Array</span> <span style="color:#f92672">=</span> Array.<span style="color:#66d9ef">from</span>({<span style="color:#a6e22e">length</span>: <span style="color:#66d9ef">indx</span>}).<span style="color:#a6e22e">fill</span>(<span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit</span>[];
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">dataForMux</span> <span style="color:#f92672">=</span> [...<span style="color:#a6e22e">selectedDirData</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#a6e22e">indx</span>), ...<span style="color:#a6e22e">bit0Array</span>] <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftedBit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux32To1</span>(<span style="color:#a6e22e">dataForMux</span>, <span style="color:#a6e22e">selectionBits</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">andGate</span>(<span style="color:#a6e22e">shiftedBit</span>, <span style="color:#a6e22e">isValidShift</span>);
+</span></span><span style="display:flex;"><span>    }) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">shiftMuxOutputData</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">dt</span>, <span style="color:#a6e22e">indx</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">dt</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftMuxOutputData</span>[<span style="color:#a6e22e">shiftMuxOutputData</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> (<span style="color:#a6e22e">indx</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftDir</span> <span style="color:#75715e">// shiftDir = 0 is left shift, 1 is right shift, on right shift reverse the reversed data
+</span></span></span><span style="display:flex;"><span>    )) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You will notice that I have removed—or, rather, modified—the previous left shifter I had made by adding the position-inversion multiplexers to both the input and output ends of the main left-shifter multiplexer network.</p>
+<p>We now have an additional argument, shiftDir.</p>
+<p>When shiftDir is 0, it means left shift.</p>
+<p>When shiftDir is 1, it means right shift.</p>
+<p>This value is fed into the 2-to-1 multiplexers that control the position inversion.</p>
+<p>The first input to each multiplexer is the data value wired in its original position, while the second input is the exact opposite position from the original.</p>
+<p>For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Original:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bit0 bit1 bit2 bit3
+</span></span><span style="display:flex;"><span>  A    B    C    D
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Reversed:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bit0 bit1 bit2 bit3
+</span></span><span style="display:flex;"><span>  D    C    B    A
+</span></span></code></pre></div><p>Therefore, when shiftDir is 0, we get the unaltered data input.</p>
+<p>When shiftDir is 1, we get the position-inverted data input.</p>
+<p>Now we reach the middle layer, where our original left-shifter circuitry resides.</p>
+<p>It doesn&rsquo;t care about the direction of the shift.</p>
+<p>It simply shifts the supplied data to the left according to the shiftBy value.</p>
+<p>And finally, at the output, we have another set of the same position-inversion multiplexers.</p>
+<p>This is where the inversion introduced at the input is reversed.</p>
+<p>So, when performing a left shift:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>original data
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>no inversion
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>left shift
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>no inversion
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>result
+</span></span></code></pre></div><p>The middle shifter simply performs the left shift we intended.</p>
+<p>For a right shift:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>original data
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>position inversion
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>left shift
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>position inversion
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>result
+</span></span></code></pre></div><p>The data is first position-inverted, the existing left-shifter shifts the inverted data, and finally the second inversion restores the original orientation.</p>
+<p>Therefore, we have implemented both left and right shifting using the same underlying shifter circuitry.</p>
+<p>The main takeaway</p>
+<p>I think I will end it here for today.</p>
+<p>Although the implementation itself didn&rsquo;t take much time and looks relatively simple, the mathematical insight is the main topic of today&rsquo;s work.</p>
+<p>Without this insight, we could have built another right-shifter circuit, potentially as large as the left-shifter circuit we already had.</p>
+<p>Instead, we recognized the relationship:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>RSHIFT(data, shiftBy)
+</span></span><span style="display:flex;"><span>=
+</span></span><span style="display:flex;"><span>REVERSE(
+</span></span><span style="display:flex;"><span>    LSHIFT(
+</span></span><span style="display:flex;"><span>        REVERSE(data),
+</span></span><span style="display:flex;"><span>        shiftBy
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>and reused the existing circuitry.</p>
+<p>This is one of the things I am beginning to appreciate about computer architecture.</p>
+<p>The complexity isn&rsquo;t always in the number of gates we need to build. Sometimes the biggest reduction in complexity comes from finding the right relationship between operations.</p>
+<p>And this is exactly why I want to approach the architecture from first principles rather than simply looking up the circuit and reproducing it.</p>
+<p>I will see you tomorrow.</p>
+<p>Till then, have a good one.</p>
+<p>Cheers.</p>
+<p>Om Namah Shivaya.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+    
+    <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
+      <a class="nav-card nav-card-prev" href="https://buffbahun-blog.pages.dev/computer-architecture/day-7/">
+        <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">« PREVIOUS ARTICLE</span>
+        <strong>Day 7 — Logical Left Shifter</strong>
+      </a>
+      <div style="flex: 1; min-width: 250px;"></div>
+    </div>
+  </footer>
+</article>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const progressBar = document.getElementById("scroll-progress-bar");
+  if (!progressBar) return;
+
+  let ticking = false;
+
+  function updateProgress() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight > 0) {
+      const progress = (window.scrollY / totalHeight) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", function() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }, { passive: true });
+});
+</script>
+    </main>
+    
+<footer class="footer" style="padding: 30px 20px; text-align: center;">
+    
+    
+    <style>
+        .footer-social-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: var(--main-width, 1000px);
+            margin: 0 auto 20px auto;
+            gap: 28px;
+            flex-direction: row;
+        }
+        .social-link-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+            text-transform: capitalize;
+        }
+        .social-link-item:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .social-link-item svg {
+            fill: currentColor;
+            width: 18px;
+            height: 18px;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .footer-social-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+
+    
+    <div class="footer-social-row">
+        <a href="https://github.com/buffbahun-prog" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="github">
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+            
+            <span>github</span>
+        </a>
+        <a href="mailto:buffbahun@gmail.com" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="email">
+            
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            
+            <span>email</span>
+        </a>
+        <a href="https://www.linkedin.com/in/asim-sapkota-b903ab227/" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="linkedin">
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+            
+            <span>linkedin</span>
+        </a>
+    </div>
+
+    
+    <div style="font-size: 0.8rem; color: var(--secondary);">
+        <span>&copy; 2026 <a href="https://buffbahun-blog.pages.dev/">Buffbahun Blogs</a></span> · 
+    </div>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

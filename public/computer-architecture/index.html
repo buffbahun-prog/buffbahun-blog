@@ -244,6 +244,23 @@ We have the tools necessary for computation, but as you can see, without a human
 
 <span title='2026-08-13 10:03:16 +0545 +0545'>August 13, 2026</span>&nbsp;·&nbsp;<span>13 min</span></footer>
   <a class="entry-link" aria-label="post link to Day 7 — Logical Left Shifter" href="https://buffbahun-blog.pages.dev/computer-architecture/day-7/"></a>
+</article><article class="post-entry" data-date="1786684428"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 8 — Logical Right Shifter
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>As promised, I have come up with an elegant solution for implementing the right shifter.
+Initially, I was thinking of building a separate circuit for it and then using a 2-to-1 multiplexer so that the appropriate circuit could be selected. But as I was implementing this circuit, I came up with a realization:
+Isn’t right shifting just the reverse—or perhaps the exact opposite—of left shifting?
+Let’s investigate it ourselves.
+Say we have an 8-bit binary number:
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-08-14 10:58:48 +0545 +0545'>August 14, 2026</span>&nbsp;·&nbsp;<span>6 min</span></footer>
+  <a class="entry-link" aria-label="post link to Day 8 — Logical Right Shifter" href="https://buffbahun-blog.pages.dev/computer-architecture/day-8/"></a>
 </article>
 </div><script>
 document.addEventListener("DOMContentLoaded", function() {

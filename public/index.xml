@@ -6,8 +6,16 @@
     <description>Recent content on Buffbahun Blogs</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 14 Aug 2026 10:58:48 +0545</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 05:56:20 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Day 9 — Logical Rotator</title>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-9/</link>
+      <pubDate>Mon, 17 Aug 2026 05:56:20 +0545</pubDate>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-9/</guid>
+      <description>&lt;p&gt;Previously, I have talked extensively about the circuitry for logical left/right shifters and, with position inversion, implemented both left and right shifting using just the left shifter circuit, paired with position inverters in case of a right shifter. We have already built it.&lt;/p&gt;
+&lt;p&gt;Today, my ambitious plan is to again modify the shifter circuitry so that this same shifter circuit, with additions/modifications to some components, can perform both shifting operations as well as rotation operations—yes, in both directions.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Day 8 — Logical Right Shifter</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-8/</link>

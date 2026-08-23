@@ -6,8 +6,17 @@
     <description>Recent content in Computer Architecture on Buffbahun Blogs</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Aug 2026 05:56:20 +0545</lastBuildDate>
+    <lastBuildDate>Sun, 23 Aug 2026 08:00:44 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/computer-architecture/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Day 10 — Unified Logical/Arithmetic Rotator/Shifter in Progress</title>
+      <link>https://buffbahun-blog.pages.dev/computer-architecture/day-10/</link>
+      <pubDate>Sun, 23 Aug 2026 08:00:44 +0545</pubDate>
+      <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-10/</guid>
+      <description>&lt;p&gt;It has been more than two days since I started working on a unified logical/arithmetic shifter and rotator circuit. It is getting increasingly complex, especially after adding the arithmetic right shifter and, more importantly, the rotate-through-carry logic. But slowly, I am getting a better understanding of the design, and I am now getting close to completing and thoroughly testing it.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s first talk about the arithmetic right shifter.&lt;/p&gt;
+&lt;p&gt;We have already had a thorough explanation of the left and right logical shifters. Their usefulness comes from operations such as multiplication and division by powers of two, as we have already discussed.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Day 9 — Logical Rotator</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-9/</link>

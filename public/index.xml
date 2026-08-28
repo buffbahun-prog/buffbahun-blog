@@ -9,15 +9,11 @@
     <lastBuildDate>Thu, 27 Aug 2026 09:16:43 +0545</lastBuildDate>
     <atom:link href="https://buffbahun-blog.pages.dev/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Day 11 | Logical/Arithematic Shifter and Rotator</title>
+      <title>Day 11 — Logical/Arithematic Shifter and Rotator</title>
       <link>https://buffbahun-blog.pages.dev/computer-architecture/day-11/</link>
       <pubDate>Thu, 27 Aug 2026 09:16:43 +0545</pubDate>
       <guid>https://buffbahun-blog.pages.dev/computer-architecture/day-11/</guid>
-      <description>&lt;p&gt;It&amp;rsquo;s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry.
-Looks simple, right? It&amp;rsquo;s just the rotation with an extra carry bit included. Yes, indeed that&amp;rsquo;s true, but I had some problem with the shift amount. I will explain why.
-Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It&amp;rsquo;s because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively.
-This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits + 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can&amp;rsquo;t be done here, as if we discard the 4th one we don&amp;rsquo;t have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely.
-Let&amp;rsquo;s look closely at what shift amounts need to be converted:&lt;/p&gt;</description>
+      <description>&lt;p&gt;It&amp;rsquo;s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Day 10 — Unified Logical/Arithmetic Rotator/Shifter in Progress</title>

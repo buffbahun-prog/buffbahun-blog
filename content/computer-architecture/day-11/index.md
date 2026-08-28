@@ -1,13 +1,17 @@
 +++
 date = '2026-08-27T09:16:43+05:45'
 draft = false
-title = 'Day 11 | Logical/Arithematic Shifter and Rotator'
+title = 'Day 11 — Logical/Arithematic Shifter and Rotator'
 +++
 
 It's been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry.
+
 Looks simple, right? It's just the rotation with an extra carry bit included. Yes, indeed that's true, but I had some problem with the shift amount. I will explain why.
+
 Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It's because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively.
+
 This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits + 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can't be done here, as if we discard the 4th one we don't have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely.
+
 Let's look closely at what shift amounts need to be converted:
 ```text
 1001 same as 0000
@@ -19,7 +23,9 @@ Let's look closely at what shift amounts need to be converted:
 1111 same as 0110
 ```
 Look closely at the above two values, then you see the first value is the sum of the second value + 1001. Now, from shift amount 1011, if we want to get the normalized/reduced shift value, we simply can subtract 1011 with 1001. This gives the normalized shift amount. For the subtraction there are just two conditions: the 4th bit must be 1 and not 1000 (it's the last rotation). With this, taking the first 4 bits of the 8-bit shift amount, then with the above conditions evaluated, we can get the normalized shift amount.
+
 You have noticed that even after this normalization of shift amount, while in the case of rotation it plays out nicely and correctly because even if we discard the 5 last bits, it doesn't play that well in the case of rotation with carry. So my plan is making good documentation in the ISA which we will develop later, putting this constraint such that the 6 least significant bits of the shift amount are only considered (my machine is 32 bits, thus (5 + 1 (rotation with carry)) shift bits).
+
 So let's have a look at the implementation then:
 ```ts
 // controlBits -> [left/right, shift/rotate, without-carry/with-carry]

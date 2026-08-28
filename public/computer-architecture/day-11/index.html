@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Day 11 | Logical/Arithematic Shifter and Rotator | Buffbahun Blogs</title>
+<meta name="keywords" content="">
+<meta name="description" content="It&rsquo;s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry.
+Looks simple, right? It&rsquo;s just the rotation with an extra carry bit included. Yes, indeed that&rsquo;s true, but I had some problem with the shift amount. I will explain why.
+Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It&rsquo;s because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively.
+This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits &#43; 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can&rsquo;t be done here, as if we discard the 4th one we don&rsquo;t have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely.
+Let&rsquo;s look closely at what shift amounts need to be converted:">
+<meta name="author" content="">
+<link rel="canonical" href="https://buffbahun-blog.pages.dev/computer-architecture/day-11/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4104cdd43c3e2da6a3daff6390540b32dad8db70b21547670eef3a166bbbc0df.css" integrity="sha256-QQTN1Dw&#43;Laaj2v9jkFQLMtrY23CyFUdnDu86Fmu7wN8=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://buffbahun-blog.pages.dev/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://buffbahun-blog.pages.dev/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://buffbahun-blog.pages.dev/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://buffbahun-blog.pages.dev/apple-touch-icon.png">
+<link rel="mask-icon" href="https://buffbahun-blog.pages.dev/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://buffbahun-blog.pages.dev/computer-architecture/day-11/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta name="google-site-verification" content="SkGEUE798CAWpm3UC62wMp3WKrnOaTKok0udG7ADBDk" /><meta property="og:url" content="https://buffbahun-blog.pages.dev/computer-architecture/day-11/">
+  <meta property="og:site_name" content="Buffbahun Blogs">
+  <meta property="og:title" content="Day 11 | Logical/Arithematic Shifter and Rotator">
+  <meta property="og:description" content="It’s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry. Looks simple, right? It’s just the rotation with an extra carry bit included. Yes, indeed that’s true, but I had some problem with the shift amount. I will explain why. Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It’s because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively. This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits &#43; 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can’t be done here, as if we discard the 4th one we don’t have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely. Let’s look closely at what shift amounts need to be converted:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="computer-architecture">
+    <meta property="article:published_time" content="2026-08-27T09:16:43+05:45">
+    <meta property="article:modified_time" content="2026-08-27T09:16:43+05:45">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Day 11 | Logical/Arithematic Shifter and Rotator">
+  <meta name="twitter:description" content="It’s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry. Looks simple, right? It’s just the rotation with an extra carry bit included. Yes, indeed that’s true, but I had some problem with the shift amount. I will explain why. Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It’s because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively. This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits &#43; 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can’t be done here, as if we discard the 4th one we don’t have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely. Let’s look closely at what shift amounts need to be converted:">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Computer Architecture",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Day 11 | Logical/Arithematic Shifter and Rotator",
+      "item": "https://buffbahun-blog.pages.dev/computer-architecture/day-11/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Day 11 | Logical/Arithematic Shifter and Rotator",
+  "name": "Day 11 | Logical\/Arithematic Shifter and Rotator",
+  "description": "It\u0026rsquo;s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry. Looks simple, right? It\u0026rsquo;s just the rotation with an extra carry bit included. Yes, indeed that\u0026rsquo;s true, but I had some problem with the shift amount. I will explain why. Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It\u0026rsquo;s because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively. This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits + 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can\u0026rsquo;t be done here, as if we discard the 4th one we don\u0026rsquo;t have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely. Let\u0026rsquo;s look closely at what shift amounts need to be converted:\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "It’s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry. Looks simple, right? It’s just the rotation with an extra carry bit included. Yes, indeed that’s true, but I had some problem with the shift amount. I will explain why. Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It’s because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively. This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits + 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can’t be done here, as if we discard the 4th one we don’t have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely. Let’s look closely at what shift amounts need to be converted:\n1001 same as 0000 1010 same as 0001 1011 same as 0010 1100 same as 0011 1101 same as 0100 1110 same as 0101 1111 same as 0110 Look closely at the above two values, then you see the first value is the sum of the second value + 1001. Now, from shift amount 1011, if we want to get the normalized/reduced shift value, we simply can subtract 1011 with 1001. This gives the normalized shift amount. For the subtraction there are just two conditions: the 4th bit must be 1 and not 1000 (it’s the last rotation). With this, taking the first 4 bits of the 8-bit shift amount, then with the above conditions evaluated, we can get the normalized shift amount. You have noticed that even after this normalization of shift amount, while in the case of rotation it plays out nicely and correctly because even if we discard the 5 last bits, it doesn’t play that well in the case of rotation with carry. So my plan is making good documentation in the ISA which we will develop later, putting this constraint such that the 6 least significant bits of the shift amount are only considered (my machine is 32 bits, thus (5 + 1 (rotation with carry)) shift bits). So let’s have a look at the implementation then:\n// controlBits -\u003e [left/right, shift/rotate, without-carry/with-carry] // [0/1, 0/1, 0/1] // // 000 -\u003e no operation // 001 -\u003e left shift // 010 -\u003e left rotate without-carry // 011 -\u003e left rotate with-carry // 100 -\u003e right shift arithmetic // 101 -\u003e right shift // 110 -\u003e right rotate without-carry // 111 -\u003e right rotate with-carry export function shiftRotate32( data: Bit32, shiftBy: Bit32, carryBit: Bit, controlBits: Bit3, ): { result: Bit32; carry: Bit } { // ------------------------------------------------------------ // Control // ------------------------------------------------------------ const [shiftDirection, rotate, rotateWithCarry] = controlBits; const operationEnabled = orGateNInp(controlBits); const arithmeticShift = andGateNInp([ shiftDirection, inverter(rotate), inverter(rotateWithCarry), ]); const signBit = data[0]; const rotateWithCarryEnabled = andGate(rotate, rotateWithCarry); const rotateRightWithCarry = andGate( shiftDirection, rotateWithCarryEnabled, ); const shiftAmount = normalizedShiftAmt( shiftBy, rotateWithCarryEnabled, ); // ------------------------------------------------------------ // Normalize input direction // // The barrel stages always perform their operation in the // same direction. For a right operation, reverse the data // before entering the barrel shifter. // ------------------------------------------------------------ const directionNormalizedData = data .map((bit, index) =\u003e mux2To1( bit, data[data.length - (index + 1)], shiftDirection, ) ) .map((bit, index, normalizedData) =\u003e mux2To1( bit, index \u003e= normalizedData.length - 1 ? carryBit : normalizedData[index + 1], rotateRightWithCarry, ) ) as Bit32; let stageCarry = mux2To1( carryBit, data[data.length - 1], rotateRightWithCarry, ); // ------------------------------------------------------------ // Barrel shifter stage // ------------------------------------------------------------ const barrelStage = ( shiftAmount: number, index: number, inputData: Bit32, stageEnabled: Bit, ): Bit =\u003e { const fillStartIndex = inputData.length - shiftAmount; const isFillPosition = index \u003e= fillStartIndex; // -------------------------------------------------------- // Shift // -------------------------------------------------------- const shiftFillBit = andGate( arithmeticShift, signBit, ); const shiftedBit = isFillPosition ? shiftFillBit : inputData[index + shiftAmount]; // -------------------------------------------------------- // Rotate // -------------------------------------------------------- const rotatedBit = isFillPosition ? mux2To1( inputData[index - fillStartIndex], index === fillStartIndex ? stageCarry : inputData[index - fillStartIndex - 1], rotateWithCarryEnabled, ) : inputData[index + shiftAmount]; // -------------------------------------------------------- // Select shift or rotate // -------------------------------------------------------- const transformedBit = mux2To1( shiftedBit, rotatedBit, rotate, ); // -------------------------------------------------------- // Enable / bypass this barrel stage // -------------------------------------------------------- return mux2To1( inputData[index], transformedBit, stageEnabled, ); }; // ------------------------------------------------------------ // Barrel shifter // // Stages: // // 1 -\u003e 16 -\u003e 8 -\u003e 4 -\u003e 2 -\u003e 1 // // This ordering allows a shift of 32 to be represented as: // // 1 + 16 + 8 + 4 + 2 + 1 = 32 // // which is required for rotate-through-carry. // ------------------------------------------------------------ // 1-place shifter / rotator const shift1Data = directionNormalizedData.map( (_, index, inputData) =\u003e barrelStage( 1, index, inputData as Bit32, shiftAmount[0], ) ); stageCarry = mux2To1( stageCarry, directionNormalizedData[0], shiftAmount[0], ); // 16-place shifter / rotator const shift16Data = shift1Data.map( (_, index, inputData) =\u003e barrelStage( 16, index, inputData as Bit32, shiftAmount[1], ) ); stageCarry = mux2To1( stageCarry, shift1Data[15], shiftAmount[1], ); // 8-place shifter / rotator const shift8Data = shift16Data.map( (_, index, inputData) =\u003e barrelStage( 8, index, inputData as Bit32, shiftAmount[2], ) ); stageCarry = mux2To1( stageCarry, shift16Data[7], shiftAmount[2], ); // 4-place shifter / rotator const shift4Data = shift8Data.map( (_, index, inputData) =\u003e barrelStage( 4, index, inputData as Bit32, shiftAmount[3], ) ); stageCarry = mux2To1( stageCarry, shift8Data[3], shiftAmount[3], ); // 2-place shifter / rotator const shift2Data = shift4Data.map( (_, index, inputData) =\u003e barrelStage( 2, index, inputData as Bit32, shiftAmount[4], ) ); stageCarry = mux2To1( stageCarry, shift4Data[1], shiftAmount[4], ); // 1-place shifter / rotator const finalShiftData = shift2Data.map( (_, index, inputData) =\u003e barrelStage( 1, index, inputData as Bit32, shiftAmount[5], ) ); stageCarry = mux2To1( stageCarry, shift2Data[0], shiftAmount[5], ); // ------------------------------------------------------------ // Restore original direction // // The barrel shifter operates in the normalized direction. // Reverse the data again when the requested operation is right. // ------------------------------------------------------------ const directionRestoredData = finalShiftData .map((bit, index, transformedData) =\u003e mux2To1( bit, transformedData[transformedData.length - (index + 1)], shiftDirection, ) ) .map((bit, index, restoredData) =\u003e mux2To1( bit, index \u003e= restoredData.length - 1 ? stageCarry : restoredData[index + 1], rotateRightWithCarry, ) ) as Bit32; stageCarry = mux2To1( stageCarry, finalShiftData[finalShiftData.length - 1], rotateRightWithCarry, ); // ----------------------------------------------------------- // If shift and shift amount greater then 011111 then // arthematic right shift all bits sign bits // normal shift all 0 // ----------------------------------------------------------- const isShift = inverter(rotate); const fillValue = andGate(arithmeticShift, signBit); const shiftOverflowData = directionRestoredData.map( bit =\u003e mux2To1( bit, fillValue, andGate( isShift, orGateNInp( shiftBy.slice(0, 27) ) ) ) ); // ------------------------------------------------------------ // Operation enable // // 000 means no operation, so preserve the original input. // ------------------------------------------------------------ const result = shiftOverflowData.map( (bit, index) =\u003e mux2To1( data[index], bit, operationEnabled, ) ) as Bit32; // Carry only changes for rotate-through-carry. const finalCarry = mux2To1( carryBit, stageCarry, rotateWithCarryEnabled, ); return { result, carry: finalCarry, }; } I won’t go into much detail, but the general flow is:\nThe three control bits which constitute 8 possible operations are implemented with the proper control description and the required sections in the comment above the function and the first few lines in the beginning of the function.\nThe function normalizedShiftAmt is used as we have already discussed; its implementation and constraints are as follows:\nfunction normalizedShiftAmt( shiftBy: Bit32, rotateWithCarry: Bit, ): Bit6 { const shiftAmount = shiftBy.slice(32 - 6) as Bit6; shiftAmount[0] = andGate( rotateWithCarry, shiftAmount[0], ); const isShiftBy32 = andGate( shiftAmount[0], norGateNInp(shiftAmount.slice(1)), ); const shouldModulo33 = andGateNInp([ rotateWithCarry, shiftAmount[0], inverter(isShiftBy32), ]); const negative33OrZero = [ 0, shouldModulo33, shouldModulo33, shouldModulo33, shouldModulo33, shouldModulo33, ] as Bit6; const moduloResult = bitAdder6( 0, shiftAmount, negative33OrZero, )[0]; // Normal shift/rotate: // 32 -\u003e 0 // // Rotate-through-carry: // 33 -\u003e 0 // // Instead of: // 32 -\u003e 16 -\u003e 8 -\u003e 4 -\u003e 2 -\u003e 1 // // We use: // 1 -\u003e 16 -\u003e 8 -\u003e 4 -\u003e 2 -\u003e 1 // // so that shift-by-32 becomes: // 1 + 16 + 8 + 4 + 2 + 1 = 32 return moduloResult.map( bit =\u003e orGate(isShiftBy32, bit) ) as Bit6; } As discussed already, we do the subtraction operation to get the desired normalized value with the particular constant value. Now, another thing which is important to understand is the last return part along with the above comments. When the operation is rotate through carry and the shift amount is exactly 32, then all the 6 shift amount bits are converted to 1. Why I have done this, I will explain shortly.\nIn case of right rotate/shift, we inverse the bit position of the data so that it can be operated just with the left shifter/rotator we have implemented without needing additional right shift/rotate circuitry, and re-inverse the transformed data back to its original bit positions.\nMathematically, with 16, 8, 4, 2, 1 amount shifter/rotator circuits, with combinations of these circuits we can get all the possible shift amounts within this range, i.e., 0 to 31. So if the shift amount is 00000, none of the shifter/rotators are activated, thus no shifting/rotating. Now, if we want to shift by 21 (10101), which is 16 + 4 + 1, aligning the bit positions to the shifter such as:\nshifter/rotator 16 8 4 2 1 shift amount b0 b1 b2 b3 b4 example 21 = (16 + 4 + 1) --\u003e 1 0 1 0 1 | (binary value) | 16 0 4 0 1 v | 10101----------------- The above circuitry is for 31 total shift/rotate operations which fits nicely for our simple shifter/rotator, but for rotate-with-carry there is an extra shift required, that is 31 + 1, which is achieved by one additional shift amount 1 shifter/rotator, and we put it at the beginning as 1 16 8 4 2 1. This is why all the bits were set to 1 in the normalize function when the operation is rotate-with-carry and the rotate amount is exactly 32 (1+16+8+4+2+1).\nThe barrel shift function simulates all the barrel left shifter/rotator circuitry with just the required circuitry enabled according to the shift amount.\nAlong with the data bit rotating, the carry bit is also shifted and calculated according to the shift amount and returned with the function along with the final data result.\nAs we have 6 bits for shift amount, but as all the 6 bits are only required by the rotate-with-carry, and on shifting beyond and equal to 31 transforms the data with the fill bit (0 or sign bit in case of arithmetic shift), the output data is accounted as such. And finally, the transformed data along with the possibly shifted carry bit is returned on circuit enabled; in case not, the data and carry are returned as is.\nI think all that is to be done with the shifter/rotator operation and circuit is sufficiently simulated by this function. Now I will have a large test case coverage, and if any bug is found, I will update the implementation with the corrected one.\nI think this much for today will do the job. With my current study and research I am doing, I am trying to make specific operations done with the arithmetic unit and logic unit and trying to figure out the appropriate inputs, outputs, along with the basic operations they should be doing so that I can modularize these two units and it will be easier for me while creating the ALU circuit. I will be posting the updates as soon as I have some progress worthy of sharing. Till then have a good one. Cheers.\nOm Namaha Shivaya.\n",
+  "wordCount" : "2089",
+  "inLanguage": "en",
+  "datePublished": "2026-08-27T09:16:43+05:45",
+  "dateModified": "2026-08-27T09:16:43+05:45",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://buffbahun-blog.pages.dev/computer-architecture/day-11/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Buffbahun Blogs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://buffbahun-blog.pages.dev/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="https://buffbahun-blog.pages.dev/" accesskey="h" title="Buffbahun Blogs (Alt + H)">Buffbahun Blogs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+
+<div id="scroll-progress-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 4px; background-color: transparent; z-index: 9999;">
+  <div id="scroll-progress-bar" style="height: 100%; width: 0%; background: var(--primary, #2483ff); transition: width 0.1s ease-out;"></div>
+</div>
+
+
+<style>
+  .back-to-section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  .back-to-section-link:hover {
+    color: var(--primary);
+    transform: translateX(-4px);
+  }
+  .nav-card {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary);
+    background: var(--code-bg, transparent);
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-card:hover {
+    background: var(--sys-bg, var(--theme));
+    border-color: var(--primary);
+  }
+  .nav-card-prev:hover {
+    transform: translateX(-5px);
+  }
+  .nav-card-next:hover {
+    transform: translateX(5px);
+  }
+  
+   
+  .audio-container {
+    margin: 20px 0 25px 0;
+    padding: 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .audio-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .audio-player-element {
+    width: 100%;
+    height: 40px;
+    outline: none;
+  }
+</style>
+
+<article class="post-single">
+  <header class="post-header">
+    
+    
+    
+      <a href="https://buffbahun-blog.pages.dev/computer-architecture/" class="back-to-section-link" aria-label="Back to Computer Architecture">
+        <svg xmlns="http://w3.org" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Computer Architecture</span>
+      </a>
+
+    <h1 class="post-title entry-hint-parent">
+      Day 11 | Logical/Arithematic Shifter and Rotator
+    </h1>
+    <div class="post-meta">
+
+<span title='2026-08-27 09:16:43 +0545 +0545'>August 27, 2026</span>&nbsp;·&nbsp;<span>10 min</span>
+
+</div>
+
+    
+
+  </header> 
+  <div class="post-content md-content"><p>It&rsquo;s been long, I guess the shifter made me shift the day when I should have posted. But, not going to lie, I was skimming through both the logical and arithmetic shift operations and the rotation operations too. I have used mathematics and the inversion law to normalize the bit position and have just a single left shifter/rotator circuit for both directions. But there was just one more operation where I had to really think deep and analyze: rotate through carry.
+Looks simple, right? It&rsquo;s just the rotation with an extra carry bit included. Yes, indeed that&rsquo;s true, but I had some problem with the shift amount. I will explain why.
+Now suppose you are rotating an 8-bit data, so we can rotate it in 8 unique positions, i.e., 7 total rotations, after which it repeats again. For this, just the first 3 bits of the 8-bit shift amount are required, and the other 5 most significant bits we can discard. Why? It&rsquo;s because after 111, if we increment it by 1 we get 000 (1 is the carry). Now, after rotating the 8-bit data 7 times, the 8th rotation is the exact same as the 0th one. You can clearly see it cycle from 0 to 7 repetitively.
+This works great with the rotation operation. But for rotate with carry operation, there is one more extra unique rotation that can be done due to the extra carry bit. So from our previous example, the data is now actually 9 bits (8 data bits + 1 carry bit). So there are 0000 to 1000 total rotations, i.e., 8 total rotations. Now, the modulus operation that we got above nicely — this can&rsquo;t be done here, as if we discard the 4th one we don&rsquo;t have all the possible shift amounts, so we have to keep it. But now how can we reduce 1001 to 0000, 1010 to 0001, and so on, so that it works out nicely.
+Let&rsquo;s look closely at what shift amounts need to be converted:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1001 same as 0000
+</span></span><span style="display:flex;"><span>1010 same as 0001
+</span></span><span style="display:flex;"><span>1011 same as 0010
+</span></span><span style="display:flex;"><span>1100 same as 0011
+</span></span><span style="display:flex;"><span>1101 same as 0100
+</span></span><span style="display:flex;"><span>1110 same as 0101
+</span></span><span style="display:flex;"><span>1111 same as 0110
+</span></span></code></pre></div><p>Look closely at the above two values, then you see the first value is the sum of the second value + 1001. Now, from shift amount 1011, if we want to get the normalized/reduced shift value, we simply can subtract 1011 with 1001. This gives the normalized shift amount. For the subtraction there are just two conditions: the 4th bit must be 1 and not 1000 (it&rsquo;s the last rotation). With this, taking the first 4 bits of the 8-bit shift amount, then with the above conditions evaluated, we can get the normalized shift amount.
+You have noticed that even after this normalization of shift amount, while in the case of rotation it plays out nicely and correctly because even if we discard the 5 last bits, it doesn&rsquo;t play that well in the case of rotation with carry. So my plan is making good documentation in the ISA which we will develop later, putting this constraint such that the 6 least significant bits of the shift amount are only considered (my machine is 32 bits, thus (5 + 1 (rotation with carry)) shift bits).
+So let&rsquo;s have a look at the implementation then:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#75715e">// controlBits -&gt; [left/right, shift/rotate, without-carry/with-carry]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//               [0/1,        0/1,          0/1]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 000 -&gt; no operation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 001 -&gt; left shift
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 010 -&gt; left rotate without-carry
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 011 -&gt; left rotate with-carry
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 100 -&gt; right shift arithmetic
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 101 -&gt; right shift
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 110 -&gt; right rotate without-carry
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 111 -&gt; right rotate with-carry
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">shiftRotate32</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">Bit32</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">shiftBy</span>: <span style="color:#66d9ef">Bit32</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">carryBit</span>: <span style="color:#66d9ef">Bit</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">controlBits</span>: <span style="color:#66d9ef">Bit3</span>,
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> { <span style="color:#a6e22e">result</span>: <span style="color:#66d9ef">Bit32</span>; <span style="color:#a6e22e">carry</span>: <span style="color:#66d9ef">Bit</span> } {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Control
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">shiftDirection</span>, <span style="color:#a6e22e">rotate</span>, <span style="color:#a6e22e">rotateWithCarry</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">controlBits</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">operationEnabled</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">orGateNInp</span>(<span style="color:#a6e22e">controlBits</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">arithmeticShift</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftDirection</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">rotate</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">rotateWithCarry</span>),
+</span></span><span style="display:flex;"><span>    ]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">signBit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">rotateWithCarryEnabled</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGate</span>(<span style="color:#a6e22e">rotate</span>, <span style="color:#a6e22e">rotateWithCarry</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">rotateRightWithCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftDirection</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rotateWithCarryEnabled</span>,
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftAmount</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">normalizedShiftAmt</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftBy</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rotateWithCarryEnabled</span>,
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Normalize input direction
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The barrel stages always perform their operation in the
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// same direction. For a right operation, reverse the data
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// before entering the barrel shifter.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">directionNormalizedData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">index</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">bit</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)],
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftDirection</span>,
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">normalizedData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">bit</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">normalizedData</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">?</span> <span style="color:#a6e22e">carryBit</span>
+</span></span><span style="display:flex;"><span>                    : <span style="color:#66d9ef">normalizedData</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">rotateRightWithCarry</span>,
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        ) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">carryBit</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rotateRightWithCarry</span>,
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Barrel shifter stage
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">barrelStage</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>: <span style="color:#66d9ef">number</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">index</span>: <span style="color:#66d9ef">number</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">inputData</span>: <span style="color:#66d9ef">Bit32</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageEnabled</span>: <span style="color:#66d9ef">Bit</span>,
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fillStartIndex</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">inputData</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">shiftAmount</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isFillPosition</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">index</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">fillStartIndex</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Shift
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftFillBit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">arithmeticShift</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">signBit</span>,
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftedBit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">isFillPosition</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">?</span> <span style="color:#a6e22e">shiftFillBit</span>
+</span></span><span style="display:flex;"><span>            : <span style="color:#66d9ef">inputData</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">shiftAmount</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Rotate
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">rotatedBit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">isFillPosition</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">?</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">inputData</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">fillStartIndex</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">fillStartIndex</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">?</span> <span style="color:#a6e22e">stageCarry</span>
+</span></span><span style="display:flex;"><span>                    : <span style="color:#66d9ef">inputData</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">fillStartIndex</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">rotateWithCarryEnabled</span>,
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">:</span> <span style="color:#a6e22e">inputData</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">shiftAmount</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Select shift or rotate
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">transformedBit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">shiftedBit</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">rotatedBit</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">rotate</span>,
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Enable / bypass this barrel stage
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// --------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">inputData</span>[<span style="color:#a6e22e">index</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">transformedBit</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">stageEnabled</span>,
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Barrel shifter
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Stages:
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//   1 -&gt; 16 -&gt; 8 -&gt; 4 -&gt; 2 -&gt; 1
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// This ordering allows a shift of 32 to be represented as:
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//   1 + 16 + 8 + 4 + 2 + 1 = 32
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// which is required for rotate-through-carry.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1-place shifter / rotator
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shift1Data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">directionNormalizedData</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        (<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">inputData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">barrelStage</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">inputData</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">directionNormalizedData</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 16-place shifter / rotator
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shift16Data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shift1Data</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        (<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">inputData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">barrelStage</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">inputData</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shift1Data</span>[<span style="color:#ae81ff">15</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 8-place shifter / rotator
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shift8Data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shift16Data</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        (<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">inputData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">barrelStage</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">8</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">inputData</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">2</span>],
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shift16Data</span>[<span style="color:#ae81ff">7</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">2</span>],
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 4-place shifter / rotator
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shift4Data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shift8Data</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        (<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">inputData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">barrelStage</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">inputData</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">3</span>],
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shift8Data</span>[<span style="color:#ae81ff">3</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">3</span>],
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2-place shifter / rotator
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shift2Data</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shift4Data</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        (<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">inputData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">barrelStage</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">2</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">inputData</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">4</span>],
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shift4Data</span>[<span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">4</span>],
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1-place shifter / rotator
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">finalShiftData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shift2Data</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        (<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">inputData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">barrelStage</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">inputData</span> <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">5</span>],
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shift2Data</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">5</span>],
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Restore original direction
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The barrel shifter operates in the normalized direction.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Reverse the data again when the requested operation is right.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">directionRestoredData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">finalShiftData</span>
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">transformedData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">bit</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">transformedData</span>[<span style="color:#a6e22e">transformedData</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> (<span style="color:#a6e22e">index</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)],
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">shiftDirection</span>,
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">restoredData</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">bit</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">index</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">restoredData</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">?</span> <span style="color:#a6e22e">stageCarry</span>
+</span></span><span style="display:flex;"><span>                    : <span style="color:#66d9ef">restoredData</span>[<span style="color:#a6e22e">index</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">rotateRightWithCarry</span>,
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>        ) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">stageCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">finalShiftData</span>[<span style="color:#a6e22e">finalShiftData</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rotateRightWithCarry</span>,
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// -----------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// If shift and shift amount greater then 011111 then
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// arthematic right shift all bits sign bits
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// normal shift all 0
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// -----------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isShift</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">rotate</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fillValue</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGate</span>(<span style="color:#a6e22e">arithmeticShift</span>, <span style="color:#a6e22e">signBit</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftOverflowData</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">directionRestoredData</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">bit</span> <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">bit</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">fillValue</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">isShift</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">orGateNInp</span>(
+</span></span><span style="display:flex;"><span>                        <span style="color:#a6e22e">shiftBy</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">27</span>)
+</span></span><span style="display:flex;"><span>                    )
+</span></span><span style="display:flex;"><span>                )
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Operation enable
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 000 means no operation, so preserve the original input.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shiftOverflowData</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        (<span style="color:#a6e22e">bit</span>, <span style="color:#a6e22e">index</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">index</span>],
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">bit</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">operationEnabled</span>,
+</span></span><span style="display:flex;"><span>            )
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit32</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Carry only changes for rotate-through-carry.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">finalCarry</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">mux2To1</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">carryBit</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">stageCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rotateWithCarryEnabled</span>,
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">result</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">carry</span>: <span style="color:#66d9ef">finalCarry</span>,
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I won&rsquo;t go into much detail, but the general flow is:</p>
+<ol>
+<li>
+<p>The three control bits which constitute 8 possible operations are implemented with the proper control description and the required sections in the comment above the function and the first few lines in the beginning of the function.</p>
+</li>
+<li>
+<p>The function normalizedShiftAmt is used as we have already discussed; its implementation and constraints are as follows:</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">normalizedShiftAmt</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">shiftBy</span>: <span style="color:#66d9ef">Bit32</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">rotateWithCarry</span>: <span style="color:#66d9ef">Bit</span>,
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Bit6</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shiftAmount</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">shiftBy</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">32</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">6</span>) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit6</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rotateWithCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">isShiftBy32</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGate</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">norGateNInp</span>(<span style="color:#a6e22e">shiftAmount</span>.<span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">1</span>)),
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">shouldModulo33</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">andGateNInp</span>([
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rotateWithCarry</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">inverter</span>(<span style="color:#a6e22e">isShiftBy32</span>),
+</span></span><span style="display:flex;"><span>    ]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">negative33OrZero</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shouldModulo33</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shouldModulo33</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shouldModulo33</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shouldModulo33</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shouldModulo33</span>,
+</span></span><span style="display:flex;"><span>    ] <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit6</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">moduloResult</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">bitAdder6</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">shiftAmount</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">negative33OrZero</span>,
+</span></span><span style="display:flex;"><span>    )[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Normal shift/rotate:
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//     32 -&gt; 0
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Rotate-through-carry:
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//     33 -&gt; 0
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Instead of:
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//     32 -&gt; 16 -&gt; 8 -&gt; 4 -&gt; 2 -&gt; 1
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// We use:
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//     1 -&gt; 16 -&gt; 8 -&gt; 4 -&gt; 2 -&gt; 1
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// so that shift-by-32 becomes:
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//     1 + 16 + 8 + 4 + 2 + 1 = 32
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">moduloResult</span>.<span style="color:#a6e22e">map</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">bit</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">orGate</span>(<span style="color:#a6e22e">isShiftBy32</span>, <span style="color:#a6e22e">bit</span>)
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">as</span> <span style="color:#a6e22e">Bit6</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>As discussed already, we do the subtraction operation to get the desired normalized value with the particular constant value. Now, another thing which is important to understand is the last return part along with the above comments. When the operation is rotate through carry and the shift amount is exactly 32, then all the 6 shift amount bits are converted to 1. Why I have done this, I will explain shortly.</p>
+<ol start="3">
+<li>
+<p>In case of right rotate/shift, we inverse the bit position of the data so that it can be operated just with the left shifter/rotator we have implemented without needing additional right shift/rotate circuitry, and re-inverse the transformed data back to its original bit positions.</p>
+</li>
+<li>
+<p>Mathematically, with 16, 8, 4, 2, 1 amount shifter/rotator circuits, with combinations of these circuits we can get all the possible shift amounts within this range, i.e., 0 to 31. So if the shift amount is 00000, none of the shifter/rotators are activated, thus no shifting/rotating. Now, if we want to shift by 21 (10101), which is 16 + 4 + 1, aligning the bit positions to the shifter such as:</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>shifter/rotator               16  8  4  2  1
+</span></span><span style="display:flex;"><span>shift amount                  b0 b1 b2 b3 b4
+</span></span><span style="display:flex;"><span>example 21 = (16 + 4 + 1)  --&gt; 1  0  1  0  1
+</span></span><span style="display:flex;"><span>        | (binary value)   |  16  0  4  0  1
+</span></span><span style="display:flex;"><span>        v                  |
+</span></span><span style="display:flex;"><span>      10101-----------------
+</span></span></code></pre></div><p>The above circuitry is for 31 total shift/rotate operations which fits nicely for our simple shifter/rotator, but for rotate-with-carry there is an extra shift required, that is 31 + 1, which is achieved by one additional shift amount 1 shifter/rotator, and we put it at the beginning as 1 16 8 4 2 1. This is why all the bits were set to 1 in the normalize function when the operation is rotate-with-carry and the rotate amount is exactly 32 (1+16+8+4+2+1).</p>
+<ol start="5">
+<li>
+<p>The barrel shift function simulates all the barrel left shifter/rotator circuitry with just the required circuitry enabled according to the shift amount.</p>
+</li>
+<li>
+<p>Along with the data bit rotating, the carry bit is also shifted and calculated according to the shift amount and returned with the function along with the final data result.</p>
+</li>
+<li>
+<p>As we have 6 bits for shift amount, but as all the 6 bits are only required by the rotate-with-carry, and on shifting beyond and equal to 31 transforms the data with the fill bit (0 or sign bit in case of arithmetic shift), the output data is accounted as such. And finally, the transformed data along with the possibly shifted carry bit is returned on circuit enabled; in case not, the data and carry are returned as is.</p>
+</li>
+</ol>
+<p>I think all that is to be done with the shifter/rotator operation and circuit is sufficiently simulated by this function. Now I will have a large test case coverage, and if any bug is found, I will update the implementation with the corrected one.</p>
+<p>I think this much for today will do the job. With my current study and research I am doing, I am trying to make specific operations done with the arithmetic unit and logic unit and trying to figure out the appropriate inputs, outputs, along with the basic operations they should be doing so that I can modularize these two units and it will be easier for me while creating the ALU circuit. I will be posting the updates as soon as I have some progress worthy of sharing.
+Till then have a good one.
+Cheers.</p>
+<p>Om Namaha Shivaya.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+    
+    <div class="post-navigation" style="display: flex; justify-content: space-between; margin-top: 30px; gap: 20px; flex-wrap: wrap;">
+      <a class="nav-card nav-card-prev" href="https://buffbahun-blog.pages.dev/computer-architecture/day-10/">
+        <span style="font-size: 0.8rem; color: var(--secondary); display: block; margin-bottom: 5px;">« PREVIOUS ARTICLE</span>
+        <strong>Day 10 — Unified Logical/Arithmetic Rotator/Shifter in Progress</strong>
+      </a>
+      <div style="flex: 1; min-width: 250px;"></div>
+    </div>
+  </footer>
+</article>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const progressBar = document.getElementById("scroll-progress-bar");
+  if (!progressBar) return;
+
+  let ticking = false;
+
+  function updateProgress() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight > 0) {
+      const progress = (window.scrollY / totalHeight) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", function() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateProgress);
+      ticking = true;
+    }
+  }, { passive: true });
+});
+</script>
+    </main>
+    
+<footer class="footer" style="padding: 30px 20px; text-align: center;">
+    
+    
+    <style>
+        .footer-social-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: var(--main-width, 1000px);
+            margin: 0 auto 20px auto;
+            gap: 28px;
+            flex-direction: row;
+        }
+        .social-link-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+            text-transform: capitalize;
+        }
+        .social-link-item:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .social-link-item svg {
+            fill: currentColor;
+            width: 18px;
+            height: 18px;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .footer-social-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+
+    
+    <div class="footer-social-row">
+        <a href="https://github.com/buffbahun-prog" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="github">
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+            
+            <span>github</span>
+        </a>
+        <a href="mailto:buffbahun@gmail.com" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="email">
+            
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            
+            <span>email</span>
+        </a>
+        <a href="https://www.linkedin.com/in/asim-sapkota-b903ab227/" target="_blank" rel="noopener noreferrer" class="social-link-item" aria-label="linkedin">
+            
+            
+            <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+            
+            <span>linkedin</span>
+        </a>
+    </div>
+
+    
+    <div style="font-size: 0.8rem; color: var(--secondary);">
+        <span>&copy; 2026 <a href="https://buffbahun-blog.pages.dev/">Buffbahun Blogs</a></span> · 
+    </div>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

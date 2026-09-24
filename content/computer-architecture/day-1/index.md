@@ -40,6 +40,11 @@ export function halfAdder(bit0: Bit, bit1: Bit): [sum: Bit, carryOut: Bit] {
     ]
 }
 ```
+
+You can interact and play with the half adder circuit below:
+
+{{< circuit src="https://aksa-os.pages.dev/playground/arithmetic?circuit=half-adder" title="Interactive Half Adder" >}}
+
 This circuit is called a half adder because we have not accounted for the carry-in that should also be added to the two input numbers. So let's do just that:
 ```ts
 export function fullAdder(carryIn: Bit, bit0: Bit, bit1: Bit): [sum: Bit, carryOut: Bit] {
@@ -52,6 +57,8 @@ export function fullAdder(carryIn: Bit, bit0: Bit, bit1: Bit): [sum: Bit, carryO
 }
 ```
 This circuit consists of two half adders. First, the sum of the two inputs is calculated, and then that sum is added with the carryIn input by another half adder, producing the final sum.
+
+{{< circuit src="https://aksa-os.pages.dev/playground/arithmetic?circuit=full-adder" title="Interactive Full Adder" >}}
 
 The carry-out is the OR output of the two carry values produced by the two half adders. This is because:
 ```text
@@ -87,6 +94,8 @@ The Bit8 type is simply an array of eight Bits:
 export type Bit8 = [Bit, Bit, Bit, Bit, Bit, Bit, Bit, Bit];
 ```
 In bitAdder8, the carryOut of each fullAdder becomes the carryIn input of the next fullAdder.
+
+{{< circuit src="https://aksa-os.pages.dev/playground/arithmetic?circuit=8-bit-adder" title="Interactive 8-bit Adder" >}}
 
 The last function I have implemented is an adder-subtractor:
 ```ts

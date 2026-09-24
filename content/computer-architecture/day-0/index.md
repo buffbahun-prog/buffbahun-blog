@@ -57,11 +57,27 @@ Just as arithmetic operators such as addition (+) and subtraction (-), logical g
 
 The AND logic gate performs the AND operation on the inputs. It is the same as how we use "and" in our daily conversations. For example, when we go to a shop and say, "Please give me a shirt which has the colors red and blue." The store person gives you a shirt having both red and blue colors. The AND operator returns the Bit value 1 if and only if all the inputs are the Bit value 1; otherwise, it gives the output 0.
 
+{{< circuit src="https://aksa-os.pages.dev/playground/gates?circuit=and" title="Interactive AND Gate" >}}
+
 Similarly, the OR gate is also similar to our daily conversations, where we mean having either one of the options. The OR operator gives the output Bit 1 if any of the inputs is Bit 1, and Bit 0 only in the case when all the inputs are Bit 0.
+
+{{< circuit src="https://aksa-os.pages.dev/playground/gates?circuit=or" title="Interactive OR Gate" >}}
 
 Another fundamental logic gate is the NOT gate. It's more of an inverter than an operator, as it outputs the flipped value of the input. If the input is Bit 0, then the output is Bit 1, and vice versa.
 
+{{< circuit src="https://aksa-os.pages.dev/playground/gates?circuit=not" title="Interactive NOT Gate" >}}
+
 Now, the other operators that I have implemented are combinations of these three fundamental gates (AND, OR, and NOT). The XOR operator is an interesting one, as it outputs Bit 1 when the two inputs are different; otherwise, when both inputs are the same, it outputs Bit 0.
+
+{{< circuit src="https://aksa-os.pages.dev/playground/gates?circuit=xor" title="Interactive XOR Gate" >}}
+
+The NAND gate similarly is the combination of AND and NOT gate where the output is the inverse of AND. That is output 0 only when all the inputs are 1.
+
+{{< circuit src="https://aksa-os.pages.dev/playground/gates?circuit=nand" title="Interactive NAND Gate" >}}
+
+The NOR gate also the inverse of the OR gate constructed with combination from OR and NOT gates, the output is 1 only when all the inputs are 0.
+
+{{< circuit src="https://aksa-os.pages.dev/playground/gates?circuit=nor" title="Interactive NOR Gate" >}}
 
 I think this much will do for today. Tomorrow we will try to implement an adder from these logic gates. Till then, cheers. Have a good one.
 

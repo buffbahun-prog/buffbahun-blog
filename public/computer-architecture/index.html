@@ -10,7 +10,7 @@
 <meta name="description" content="This is a series where I am building a virtual machine inside the browser. Its a simple one for later implementing my Operating System.">
 <meta name="author" content="">
 <link rel="canonical" href="https://buffbahun-blog.pages.dev/computer-architecture/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4104cdd43c3e2da6a3daff6390540b32dad8db70b21547670eef3a166bbbc0df.css" integrity="sha256-QQTN1Dw&#43;Laaj2v9jkFQLMtrY23CyFUdnDu86Fmu7wN8=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.c2def94c8f4358b1309515654d9eebb5ccaf63f4b4809ad85d0c5f5ecaaba9df.css" integrity="sha256-wt75TI9DWLEwlRVlTZ7rtcyvY/S0gJrYXQxfXsqrqd8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://buffbahun-blog.pages.dev/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://buffbahun-blog.pages.dev/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://buffbahun-blog.pages.dev/favicon-32x32.png">
@@ -148,7 +148,7 @@ Now I have a crazy idea. Why not build my own operating system from scratch? Sou
   </div>
   <footer class="entry-footer">
 
-<span title='2026-08-04 14:52:46 +0545 +0545'>August 4, 2026</span>&nbsp;·&nbsp;<span>4 min</span></footer>
+<span title='2026-08-04 14:52:46 +0545 +0545'>August 4, 2026</span>&nbsp;·&nbsp;<span>5 min</span></footer>
   <a class="entry-link" aria-label="post link to Day 0 — Logic Gates" href="https://buffbahun-blog.pages.dev/computer-architecture/day-0/"></a>
 </article><article class="post-entry" data-date="1785900752"> 
   <header class="entry-header">
@@ -216,7 +216,7 @@ We have the tools necessary for computation, but as you can see, without a human
   </div>
   <footer class="entry-footer">
 
-<span title='2026-08-10 09:58:17 +0545 +0545'>August 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+<span title='2026-08-10 09:58:17 +0545 +0545'>August 10, 2026</span>&nbsp;·&nbsp;<span>4 min</span></footer>
   <a class="entry-link" aria-label="post link to Day 5 — Multiplexer" href="https://buffbahun-blog.pages.dev/computer-architecture/day-5/"></a>
 </article><article class="post-entry" data-date="1786419476"> 
   <header class="entry-header">
@@ -301,8 +301,23 @@ We have already had a thorough explanation of the left and right logical shifter
   </div>
   <footer class="entry-footer">
 
-<span title='2026-08-27 09:16:43 +0545 +0545'>August 27, 2026</span>&nbsp;·&nbsp;<span>10 min</span></footer>
+<span title='2026-08-27 09:16:43 +0545 +0545'>August 27, 2026</span>&nbsp;·&nbsp;<span>12 min</span></footer>
   <a class="entry-link" aria-label="post link to Day 11 — Logical/Arithematic Shifter and Rotator" href="https://buffbahun-blog.pages.dev/computer-architecture/day-11/"></a>
+</article><article class="post-entry" data-date="1788662605"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Day 12 — Arithematic Logic Unit
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>We have come across the arithmetic part, which was binary addition and subtraction. We have also come across the logical parts, such as AND, OR, NOT, and XOR gates. Now, the natural progression is to combine these circuitries to form a unit. So, that’s the ALU.
+Let’s have my implementation presented as follows. I first had a 1-bit ALU, which is a simpler circuitry:
+// control signals // [ input 1 invert, input 2 invert/negetive, ...operations(2 bit)] // operations // [0,0] -&gt; AND // [0,1] -&gt; OR // [1,0] -&gt; XOR // [1,1] -&gt; ADD export function aluBit1(carryIn: Bit, inp1: Bit, inp2: Bit, controlBits: Bit4): [result: Bit, carryOut: Bit] { const inp1Invert = controlBits[0]; const inp2Invert = controlBits[1]; const operationBits = controlBits.slice(2) as Bit2; const inp1Transformed = xorGate(inp1, inp1Invert); const inp2Transformed = xorGate(inp2, inp2Invert); const andResult = andGate(inp1Transformed, inp2Transformed); const orResult = orGate(inp1Transformed, inp2Transformed); const xorResult = xorGate(inp1Transformed, inp2Transformed); const [addResult, carryOut] = fullAdder(carryIn, inp1Transformed, inp2Transformed); const result = mux4To1( [ andResult, orResult, xorResult, addResult, ] , operationBits ); return [result, carryOut]; } There are four control bits in total. The first two are for inverting the two inputs, and the remaining two are inputs to the mux to select the desired primitive operations. With 2 bits for operation control, we get a total of four unique operations. I have chosen AND, OR, XOR, and ADD. You might think: where is the NOT operation? What about subtraction? How can we get other gates, such as NOR and NAND? Those are some legitimate queries.
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-09-06 08:28:25 +0545 +0545'>September 6, 2026</span>&nbsp;·&nbsp;<span>7 min</span></footer>
+  <a class="entry-link" aria-label="post link to Day 12 — Arithematic Logic Unit" href="https://buffbahun-blog.pages.dev/computer-architecture/day-12/"></a>
 </article>
 </div><script>
 document.addEventListener("DOMContentLoaded", function() {

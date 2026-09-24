@@ -33,6 +33,9 @@ export function mux2To1(inp0: Bit, inp1: Bit, select: Bit) {
 ```
 With the above function, I think you get the idea of how the circuit is formed. The core is, an AND gate having input i1 and i2 always outputs i2 if i1 is 1, else always 0 when i1 is 0. So, inversing the select input in one of the AND gates always ensures our output is always zero, and the other is i1/i2. And the final OR operation outputs i0/i1 as the other input is 0. So, this way, the select input dictates which input, either inp0 or inp1 in the above function, will be the output.
 
+{{< circuit src="https://aksa-os.pages.dev/playground/selectors?circuit=selector2to1" title="Interactive 2 to 1 Selector" >}}
+
+
 ```ts
 export function mux32Bit2To1(inp0: Bit32, inp1: Bit32, select: Bit) {
     return inp0.map((_, indx) => mux2To1(
@@ -43,6 +46,10 @@ export function mux32Bit2To1(inp0: Bit32, inp1: Bit32, select: Bit) {
 }
 ```
 The above function is just the parallel combination of the above multiplexer so that our whole 32-bit data/address lines are covered. It's just using the multiplexer on each of the 32 lines.
+
+I have implemented a 8 bit 2 to 1 selector as below:
+
+{{< circuit src="https://aksa-os.pages.dev/playground/selectors?circuit=selector8bit2to1" title="Interactive 8 Bit 2 to 1 Selector" >}}
 
 You might feel this series is moving at a turtle's pace. But trust me, slow and steady is the way, at least when trying to understand small topics and concepts as intuitively as possible. Tomorrow, I am planning to study the history and all major timelines of the history of computing. Right now, I feel an itch to know how all of this marvelous engineering came to be.
 

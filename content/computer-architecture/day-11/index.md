@@ -453,6 +453,142 @@ The above circuitry is for 31 total shift/rotate operations which fits nicely fo
 
 I think all that is to be done with the shifter/rotator operation and circuit is sufficiently simulated by this function. Now I will have a large test case coverage, and if any bug is found, I will update the implementation with the corrected one.
 
+I have an update for us. I have ditched the rotate through carry logic entirely because the architecture I am implementing dont have any carry register, so no special treatement from carry flags. Now the operation is reduced from 7 to 5. And no need for normalizing the shift amount because now its symmetric with the total inputs bits. So the new implementation is given below whicg is very similar to the above one just removing the rotate-through-carry and normalize shift amount logics.
+
+```ts
+// Control Bits
+// [logical / arthmematic shift, shift/rotate, left/right]
+// [0, 0, 0] -> left shift
+// [0, 0, 1] -> right shift
+// [0, 1, 0] -> left rotate
+// [0, 1, 1] -> right rotate
+// [1, 0, 0] -> invalid
+// [1, 0, 1] -> arthematic right shift
+// [1, 1, 0] -> invalid
+// [1, 1, 1] -> invalid
+export function shiftRotate8(
+    data: Bit8,
+    shiftBy: Bit3,
+    controlBits: Bit3,
+): Bit8 {
+    const [msb, rotate, rightDir] = controlBits;
+
+    const isArthematicRightShift = andGateNInp([msb, inverter(rotate), rightDir]);
+    const isvalidOp = nandGate(msb, inverter(isArthematicRightShift));
+
+    const signBit = data[0];
+
+    const shiftFillBit = andGate(
+            isArthematicRightShift,
+            signBit,
+        );
+
+    const directionNormalizedData = data
+        .map((bit, index) =>
+            mux2To1(
+                bit,
+                data[data.length - (index + 1)],
+                rightDir,
+            )
+        );
+
+    const barrelStage = (
+        shiftAmount: number,
+        index: number,
+        inputData: Bit8,
+        stageEnabled: Bit,
+    ): Bit => {
+
+        const fillStartIndex = inputData.length - shiftAmount;
+        const isFillPosition = index >= fillStartIndex;
+
+        // --------------------------------------------------------
+        // Shift
+        // --------------------------------------------------------
+
+        const shiftedBit = isFillPosition
+            ? shiftFillBit
+            : inputData[index + shiftAmount];
+
+        // --------------------------------------------------------
+        // Rotate
+        // --------------------------------------------------------
+
+        const rotatedBit = isFillPosition
+            ?
+              inputData[index - fillStartIndex]
+            : inputData[index + shiftAmount];
+
+        // --------------------------------------------------------
+        // Select shift or rotate
+        // --------------------------------------------------------
+
+        const transformedBit = mux2To1(
+            shiftedBit,
+            rotatedBit,
+            rotate,
+        );
+
+        // --------------------------------------------------------
+        // Enable / bypass this barrel stage
+        // --------------------------------------------------------
+
+        return mux2To1(
+            inputData[index],
+            transformedBit,
+            stageEnabled,
+        );
+    };
+
+    // 4-place shifter / rotator
+    const shift4Data = directionNormalizedData.map(
+        (_, index, inputData) =>
+            barrelStage(
+                4,
+                index,
+                inputData as Bit8,
+                andGate(shiftBy[0], isvalidOp),
+            )
+    );
+
+    // 2-place shifter / rotator
+    const shift2Data = shift4Data.map(
+        (_, index, inputData) =>
+            barrelStage(
+                2,
+                index,
+                inputData as Bit8,
+                andGate(shiftBy[1], isvalidOp),
+            )
+    );
+
+    // 1-place shifter / rotator
+    const finalShiftData = shift2Data.map(
+        (_, index, inputData) =>
+            barrelStage(
+                1,
+                index,
+                inputData as Bit8,
+                andGate(shiftBy[2], isvalidOp),
+            )
+    );
+    
+    const directionRestoredData = finalShiftData
+        .map((bit, index, transformedData) =>
+            mux2To1(
+                bit,
+                transformedData[transformedData.length - (index + 1)],
+                rightDir,
+            )
+        ) as Bit8;
+
+    return directionRestoredData;
+}
+```
+This is 8 Bit implementation and a interactive simulation I have created which you can analyze is below:
+
+{{< circuit src="https://aksa-os.pages.dev/playground/shifters?circuit=shifter8bit" title="Interactive 8 Bit Shifter / Rotator" >}}
+
 I think this much for today will do the job. With my current study and research I am doing, I am trying to make specific operations done with the arithmetic unit and logic unit and trying to figure out the appropriate inputs, outputs, along with the basic operations they should be doing so that I can modularize these two units and it will be easier for me while creating the ALU circuit. I will be posting the updates as soon as I have some progress worthy of sharing.
 Till then have a good one.
 Cheers.
